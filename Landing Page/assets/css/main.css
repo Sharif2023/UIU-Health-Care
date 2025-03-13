@@ -824,6 +824,74 @@ section,
   }
 }
 
+.emergency-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: white;
+  padding: 50px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.text-content {
+  max-width: 50%;
+  text-align: right;
+}
+
+.text-content h2 {
+  font-size: 24px;
+  color: #333;
+}
+
+.text-content .highlight {
+  color: #4caf4f;
+  font-weight: bold;
+}
+
+.text-content p {
+  color: #666;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  max-width: 600px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 45%; /* Two items per row */
+}
+
+.icon-stat {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4caf4f;
+  color: white;
+  border-radius: 50%;
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.stat-item h3 {
+  color: #333;
+  margin: 0;
+}
+
+.stat-item p {
+  color: #666;
+  margin: 0;
+}
+
 /*--------------------------------------------------------------
 # Features Section
 --------------------------------------------------------------*/
@@ -857,6 +925,12 @@ section,
   color: var(--contrast-color);
 }
 
+
+.img-fluid{
+  border-radius: 5px;
+  height: 300px;
+  width: 300px;
+}
 /*--------------------------------------------------------------
 # Pricing Section
 --------------------------------------------------------------*/

@@ -193,6 +193,7 @@ h6 {
 
   .navmenu li {
     position: relative;
+    text-decoration: none;
   }
 
   .navmenu a,
@@ -578,7 +579,12 @@ section,
 .hero {
   width: 100%;
   position: relative;
-  padding: 120px 0 0 0;
+  padding: 0px 0 120px 120px;
+}
+
+.hero img{
+  height: 400px;
+  width: 400px;
 }
 
 .hero .container {
@@ -802,6 +808,7 @@ section,
 
 .services .service-item h3 {
   font-weight: 700;
+  color: #4caf4f;
   margin: 10px 0 15px 0;
   font-size: 22px;
   transition: ease-in-out 0.3s;
@@ -824,12 +831,12 @@ section,
   }
 }
 
-.emergency-section {
+.stat-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background-color: white;
+  background-color: #F5F7FA;
   padding: 50px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -892,6 +899,22 @@ section,
   margin: 0;
 }
 
+
+/*VC quoute */
+#vc-quote{
+  background-color: #F5F7FA;
+}
+
+.vc-name{
+  color: #4caf4f;
+}
+
+/* Blogs and Tips */
+.card-img-top{
+  height: 250px;
+
+}
+
 /*--------------------------------------------------------------
 # Features Section
 --------------------------------------------------------------*/
@@ -925,205 +948,12 @@ section,
   color: var(--contrast-color);
 }
 
+/* Doctor */
 
 .img-fluid{
   border-radius: 5px;
   height: 300px;
   width: 300px;
-}
-/*--------------------------------------------------------------
-# Pricing Section
---------------------------------------------------------------*/
-.pricing .pricing-tem {
-  background-color: var(--surface-color);
-  box-shadow: 0px 0 30px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 0 30px rgba(0, 0, 0, 0.1);
-  padding: 40px 20px;
-  text-align: center;
-  border-radius: 4px;
-  position: relative;
-  overflow: hidden;
-  transition: 0.3s;
-  height: 100%;
-}
-
-@media (min-width: 1200px) {
-  .pricing .pricing-tem:hover {
-    transform: scale(1.1);
-  }
-}
-
-.pricing h3 {
-  font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 15px;
-}
-
-.pricing .price {
-  font-size: 36px;
-  color: var(--heading-color);
-  font-weight: 600;
-  font-family: var(--heading-font);
-}
-
-.pricing .price sup {
-  font-size: 20px;
-  top: -15px;
-  left: -3px;
-}
-
-.pricing .price span {
-  color: color-mix(in srgb, var(--default-color), transparent 50%);
-  font-size: 16px;
-  font-weight: 300;
-}
-
-.pricing .icon {
-  padding: 20px 0;
-}
-
-.pricing .icon i {
-  font-size: 48px;
-}
-
-.pricing ul {
-  padding: 0;
-  list-style: none;
-  color: var(--default-color);
-  text-align: center;
-  line-height: 26px;
-  font-size: 16px;
-  margin-bottom: 25px;
-}
-
-.pricing ul li {
-  padding-bottom: 10px;
-}
-
-.pricing ul .na {
-  color: color-mix(in srgb, var(--default-color), transparent 70%);
-  text-decoration: line-through;
-}
-
-.pricing .btn-buy {
-  display: inline-block;
-  padding: 8px 40px 10px 40px;
-  border-radius: 50px;
-  color: var(--accent-color);
-  transition: none;
-  font-size: 16px;
-  font-weight: 400;
-  font-family: var(--heading-font);
-  font-weight: 600;
-  transition: 0.3s;
-  border: 1px solid var(--accent-color);
-}
-
-.pricing .btn-buy:hover {
-  background: var(--accent-color);
-  color: var(--contrast-color);
-}
-
-.pricing .featured {
-  width: 200px;
-  position: absolute;
-  top: 18px;
-  right: -68px;
-  transform: rotate(45deg);
-  z-index: 1;
-  font-size: 14px;
-  padding: 1px 0 3px 0;
-  background: var(--accent-color);
-  color: var(--contrast-color);
-}
-
-/*--------------------------------------------------------------
-# Faq Section
---------------------------------------------------------------*/
-.faq .content h3 {
-  font-weight: 400;
-  font-size: 34px;
-}
-
-.faq .content p {
-  font-size: 15px;
-  color: color-mix(in srgb, var(--default-color), transparent 30%);
-}
-
-.faq .faq-container .faq-item {
-  background-color: var(--surface-color);
-  position: relative;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.faq .faq-container .faq-item:last-child {
-  margin-bottom: 0;
-}
-
-.faq .faq-container .faq-item h3 {
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 24px;
-  margin: 0 30px 0 0;
-  transition: 0.3s;
-  cursor: pointer;
-  display: flex;
-  align-items: flex-start;
-}
-
-.faq .faq-container .faq-item h3 .num {
-  color: var(--accent-color);
-  padding-right: 5px;
-}
-
-.faq .faq-container .faq-item h3:hover {
-  color: var(--accent-color);
-}
-
-.faq .faq-container .faq-item .faq-content {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: 0.3s ease-in-out;
-  visibility: hidden;
-  opacity: 0;
-}
-
-.faq .faq-container .faq-item .faq-content p {
-  margin-bottom: 0;
-  overflow: hidden;
-}
-
-.faq .faq-container .faq-item .faq-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 16px;
-  line-height: 0;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.faq .faq-container .faq-item .faq-toggle:hover {
-  color: var(--accent-color);
-}
-
-.faq .faq-container .faq-active h3 {
-  color: var(--accent-color);
-}
-
-.faq .faq-container .faq-active .faq-content {
-  grid-template-rows: 1fr;
-  visibility: visible;
-  opacity: 1;
-  padding-top: 10px;
-}
-
-.faq .faq-container .faq-active .faq-toggle {
-  transform: rotate(90deg);
-  color: var(--accent-color);
 }
 
 /*--------------------------------------------------------------

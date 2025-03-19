@@ -7,8 +7,8 @@
   <title>Students Homepage - UIU HealthCare</title>
 
   <!-- Favicons -->
-  <link href="Landing_Page/assets/img/title.png" rel="icon">
-  <link href="Landing_Page/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/title.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -18,20 +18,20 @@
     rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="Landing_Page/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="Landing_Page/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="Landing_Page/assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="Landing_Page/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <!-- Main CSS File -->
-  <link href="Landing_Page/assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
 </head>
 
 <body>
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-      <a href="Landing_Page/index.html" class="logo d-flex align-items-center">
+      <a href="index.html" class="logo d-flex align-items-center">
         <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="Landing_Page/assets/img/header-logo.png" alt="header-logo">
+        <img src="assets/img/header-logo.png" alt="header-logo">
         <h1 class="sitename">UIU<span> HealthCare</span></h1>
       </a>
 
@@ -44,10 +44,44 @@
           <li><a href="#about-us">Medicine & Test</a></li>
           <li><a href="#contact">Blog</a></li>
           <li><a href="#contact">About</a></li>
-          <li><img src="Landing_Page/assets/img/diagnose-bot.png" height="40px" width="40px" alt="Diagnosis-tool"></li>
+          <li><img src="assets/img/diagnose-bot.png" height="40px" width="40px" alt="Diagnosis-tool"></li>
+
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
+      <!-- Profile Dropdown -->
+      <div class="profile-container">
+        <div class="profile-btn" id="profileButton">
+          <img src="assets/img/me.jpg" alt="User Avatar">
+          <span>011221078</span>
+          <i class="bi bi-caret-down-fill"></i>
+        </div>
+        <div class="dropdown-menu" id="profileDropdown">
+          <div class="dropdown-header">
+            <img src="assets/img/me.jpg" alt="User Avatar">
+            <h5>Shariful Islam</h5>
+            <small>ID: 011221078</small>
+          </div>
+          <div class="dropdown-item">
+            <i class="bi bi-person"></i> My Profile
+          </div>
+          <div class="dropdown-item">
+            <i class="bi bi-bell"></i> Notification
+          </div>
+          <div class="dropdown-item">
+            <i class="bi bi-question-circle"></i> Help Center
+          </div>
+          <div class="dropdown-item">
+            <i class="bi bi-gear"></i> Settings and Privacy
+          </div>
+          <div class="dropdown-item">
+            <i class="bi bi-exclamation-triangle"></i> Report a problem
+          </div>
+          <div class="logout-btn">
+            <i class="bi bi-box-arrow-right"></i> Log out
+          </div>
+        </div>
+      </div>
 
     </div>
   </header>
@@ -78,6 +112,8 @@
     </div>
 
   </footer>
+<script src="assets/js/student.js"></script>
+
 </body>
 
 </html>

@@ -363,6 +363,9 @@ h6 {
   font-weight: 500;
   font-size:small;
 }
+.profile-btn i.bi-caret-down-fill {
+  color: #4caf4f;
+}
 
 /*Student Dropdown Menu Start*/
 .dropdown-menu {
@@ -421,11 +424,11 @@ h6 {
 
 .dropdown-item i {
   font-size: 18px;
-  color: #007bff;
+  color: #4caf4f;
 }
 
 .logout-btn {
-  background: #198754;
+  background: #4caf4f;
   color: white;
   text-align: center;
   font-weight: 500;

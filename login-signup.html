@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In</title>
+    <title>Sign In / Sign Up</title>
     <style>
         * {
             margin: 0;
@@ -39,6 +39,7 @@
             height: 90vh;
             background: white;
             overflow: hidden;
+            position: relative;
         }
 
         .illustration {
@@ -54,27 +55,53 @@
             height: auto;
         }
 
-        .login-form {
+        .form-container {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             padding: 40px;
+            position: relative;
         }
 
         h2 {
             font-size: 26px;
             margin-bottom: 10px;
+            text-align: center;
         }
 
-        form input {
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form input, select {
             width: 80%;
-            height: 25%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
             font-size: 16px;
+            transition: all 0.3s ease-in-out;
+            background-color: #f9f9f9;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        form input:focus, select:focus {
+            border-color: #4caf4f;
+            background-color: #fff;
+            box-shadow: 0 0 8px rgba(76, 175, 79, 0.4);
+            outline: none;
+        }
+
+        form input::placeholder {
+            color: #aaa;
+            transition: all 0.2s;
+        }
+
+        form input:focus::placeholder {
+            opacity: 0;
         }
 
         .options {
@@ -96,20 +123,17 @@
         .options input[type="checkbox"] {
             width: 14px;
             height: 14px;
-            margin-top: 10px;
         }
-
 
         button {
             width: 80%;
-            height: 25%;
             padding: 10px;
             background: #4caf4f;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
             transition: 0.3s;
         }
 
@@ -120,10 +144,30 @@
         .forgot-pass {
             color: #4caf4f;
             text-decoration: none;
+            margin-top: 5px;
         }
 
         .forgot-pass:hover {
             text-decoration: underline;
+        }
+
+        .toggle-button {
+            background: none;
+            border: none;
+            color: #4caf4f;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .toggle-button:hover {
+            text-decoration: underline;
+            background: none;
+        }
+
+        .signup-form {
+            display: none;
         }
 
         @media (max-width: 768px) {
@@ -137,7 +181,7 @@
                 max-width: 60%;
             }
 
-            .login-form {
+            .form-container {
                 padding: 30px;
             }
         }
@@ -151,20 +195,60 @@
                 <img src="https://www.commonwealthfund.org/sites/default/files/choosing-wisely-patient-doc-chat.gif"
                     alt="Illustration">
             </div>
-            <div class="login-form">
-                <h2>Sign In</h2>
-                <form>
-                    <input type="text" placeholder="ID or Email" required>
-                    <input type="password" placeholder="Password" required>
-                    <div class="options">
-                        <label><input type="checkbox"> Remember me</label>
-                        <a class="forgot-pass" href="#">Forgot Password?</a>
-                    </div>
-                    <button type="submit">Log In</button>
-                </form>
+            <div class="form-container">
+                <!-- Sign In Form -->
+                <div class="signin-form">
+                    <h2>Sign In</h2>
+                    <form>
+                        <input type="text" placeholder="ID or Email" required>
+                        <input type="password" placeholder="Password" required>
+                        <div class="options">
+                            <label><input type="checkbox"> Remember me</label>
+                            <a class="forgot-pass" href="#">Forgot Password?</a>
+                        </div>
+                        <button type="submit">Log In</button>
+                    </form>
+                    <button class="toggle-button" onclick="toggleForms()">Don't have an account? Sign Up</button>
+                </div>
+
+                <!-- Sign Up Form -->
+                <div class="signup-form">
+                    <h2>Sign Up</h2>
+                    <form>
+                        <input type="text" placeholder="Student ID" required>
+                        <input type="email" placeholder="Email" required>
+                        <input type="text" placeholder="Full Name" required>
+                        <input type="number" placeholder="Age" required>
+                        <select style="width: 80%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;" required>
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <input type="password" placeholder="Password" required>
+                        <input type="password" placeholder="Confirm Password" required>
+                        <button type="submit">Sign Up</button>
+                    </form>
+                    <button class="toggle-button" onclick="toggleForms()">Already have an account? Sign In</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleForms() {
+            let signInForm = document.querySelector(".signin-form");
+            let signUpForm = document.querySelector(".signup-form");
+
+            if (signInForm.style.display === "none") {
+                signInForm.style.display = "block";
+                signUpForm.style.display = "none";
+            } else {
+                signInForm.style.display = "none";
+                signUpForm.style.display = "block";
+            }
+        }
+    </script>
 </body>
 
 </html>

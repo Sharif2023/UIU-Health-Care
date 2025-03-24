@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content-box {
+            display: flex;
+            width: 80vw;
+            height: 90vh;
+            background: white;
+            overflow: hidden;
+        }
+
+        .illustration {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .illustration img {
+            max-width: 90%;
+            height: auto;
+        }
+
+        .login-form {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        h2 {
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        form input {
+            width: 80%;
+            height: 25%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 15px;
+            width: 80%;
+            font-size: medium;
+        }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .options input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            margin-top: 10px;
+        }
+
+
+        button {
+            width: 80%;
+            height: 25%;
+            padding: 10px;
+            background: #4caf4f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #388e3c;
+        }
+
+        .forgot-pass {
+            color: #4caf4f;
+            text-decoration: none;
+        }
+
+        .forgot-pass:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .content-box {
+                flex-direction: column;
+                height: auto;
+                width: 95vw;
+            }
+
+            .illustration img {
+                max-width: 60%;
+            }
+
+            .login-form {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content-box">
+            <div class="illustration">
+                <img src="https://www.commonwealthfund.org/sites/default/files/choosing-wisely-patient-doc-chat.gif"
+                    alt="Illustration">
+            </div>
+            <div class="login-form">
+                <h2>Sign In</h2>
+                <form>
+                    <input type="text" placeholder="ID or Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <div class="options">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a class="forgot-pass" href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit">Log In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

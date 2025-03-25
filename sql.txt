@@ -1,0 +1,12 @@
+CREATE DATABASE uiu_healthcare;
+
+USE DATABASE uiu_healthcare;
+
+CREATE TABLE students (
+    StudentID VARCHAR(20) PRIMARY KEY,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    FullName VARCHAR(100) NOT NULL,
+    Age INT CHECK (Age BETWEEN 18 AND 40),
+    Gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    PasswordHash VARCHAR(255) NOT NULL
+);

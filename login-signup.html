@@ -76,7 +76,7 @@
             align-items: center;
         }
 
-        form input, select {
+        form input {
             width: 80%;
             padding: 12px;
             margin-bottom: 12px;
@@ -88,12 +88,36 @@
             box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
         }
 
-        form input:focus, select:focus {
+        form input:focus {
             border-color: #4caf4f;
             background-color: #fff;
             box-shadow: 0 0 8px rgba(76, 175, 79, 0.4);
             outline: none;
         }
+
+        form select {
+            width: 80%;
+            color: #555;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+            background-color: #f9f9f9;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        form select:focus {
+            border-color: #4caf4f;
+            background-color: #fff;
+            box-shadow: 0 0 8px rgba(76, 175, 79, 0.4);
+            outline: none;
+        }
+
 
         form input::placeholder {
             color: #aaa;
@@ -123,6 +147,7 @@
         .options input[type="checkbox"] {
             width: 14px;
             height: 14px;
+            margin-top: 10px;
         }
 
         button {
@@ -218,8 +243,10 @@
                         <input type="text" placeholder="Student ID" required>
                         <input type="email" placeholder="Email" required>
                         <input type="text" placeholder="Full Name" required>
-                        <input type="number" placeholder="Age" required>
-                        <select style="width: 80%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;" required>
+                        <input type="number" placeholder="Age" min="18" max="40" required>
+                        <select
+                            style="width: 80%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;"
+                            required>
                             <option value="" disabled selected>Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>

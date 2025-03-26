@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In / Sign Up</title>
+    <link href="assets/img/title.png" rel="icon">
     <style>
         * {
             margin: 0;
@@ -231,7 +232,7 @@
                             <label><input type="checkbox"> Remember me</label>
                             <a class="forgot-pass" href="#">Forgot Password?</a>
                         </div>
-                        <button type="submit">Log In</button>
+                        <button type="submit" onclick="window.location='homepagestudent.html'">Log In</button>
                     </form>
                     <button class="toggle-button" onclick="toggleForms()">Don't have an account? Sign Up</button>
                 </div>
@@ -239,12 +240,15 @@
                 <!-- Sign Up Form -->
                 <div class="signup-form">
                     <h2>Sign Up</h2>
-                    <form>
-                        <input type="text" placeholder="Student ID" required>
-                        <input type="email" placeholder="Email" required>
-                        <input type="text" placeholder="Full Name" required>
-                        <input type="number" placeholder="Age" min="18" max="40" required>
-                        <select
+                    <form action="signup.php" method="post">
+                        <input type="text" name="studentID" placeholder="Student ID" required>
+                        <input type="email" name="email" placeholder="Email"
+                            pattern="[a-zA-Z]+[0-9]+@([a-zA-Z]+)\.uiu\.ac\.bd"
+                            title="Email must be in the format: text+number@department.uiu.ac.bd"
+                        required>
+                        <input type="text" name="fullName" placeholder="Full Name" required>
+                        <input type="number" name="age" placeholder="Age" min="18" max="40" required>
+                        <select name="gender"
                             style="width: 80%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;"
                             required>
                             <option value="" disabled selected>Select Gender</option>
@@ -252,8 +256,8 @@
                             <option value="female">Female</option>
                             <option value="other">Other</option>
                         </select>
-                        <input type="password" placeholder="Password" required>
-                        <input type="password" placeholder="Confirm Password" required>
+                        <input type="password" name="password" placeholder="Password" required>
+                        <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
                         <button type="submit">Sign Up</button>
                     </form>
                     <button class="toggle-button" onclick="toggleForms()">Already have an account? Sign In</button>

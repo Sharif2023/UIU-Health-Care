@@ -24,6 +24,53 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    h1 {
+      text-align: center;
+      font-weight: bold;
+      color: #1f1f1f;
+      padding: 20px 0 20px 0;
+    }
+
+    .container-quote {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #hero-gif img {
+      width: 100%;
+      max-width: 40vw;
+      height: 60vh;
+      padding: 0 5vw;
+    }
+
+    #quote-section {
+      display: grid;
+      max-width: 60vw;
+      height: 60vh;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #quote {
+      max-width: 60vw;
+      max-height: 50vh;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 2rem;
+    }
+
+    #quote-writer {
+      max-width: 60vw;
+      max-height: 10vh;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      font-size: 1.5rem;
+      color: #ff3300;
+      text-align: end;
+      padding-right: 5vw;
+    }
+  </style>
 </head>
 
 <body>
@@ -84,11 +131,26 @@
           </a>
         </div>
       </div>
-
     </div>
   </header>
-  <main class="main">
 
+  <main class="main">
+    <h1>Welcome, User! 💖</h1>
+    <div class="container-quote">
+      <div id="hero-gif">
+        <img src="assets/img/hero-student-home.gif" alt="hero-student-gif">
+      </div>
+      <div id="quote-section">
+        <div id="quote">
+          <p>"Fitness is not about being better than someone else.
+            It's about being better than you used to be."
+          </p>
+        </div>
+        <div id="quote-writer">
+          <p>- Khloe Kardashian</p>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer id="footer" class="footer light-background">
@@ -114,7 +176,7 @@
     </div>
 
   </footer>
-<script src="assets/js/student.js"></script>
+  <script src="assets/js/student.js"></script>
 
 </body>
 

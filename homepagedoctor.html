@@ -24,6 +24,90 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    .dashboard {
+      padding: 40px;
+      text-align: center;
+      background-image: url(https://i.pinimg.com/originals/1f/a8/5e/1fa85e15d783da455ba35665454041fc.gif);
+      background-repeat: no-repeat;
+      background-size: 100vw;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .dashboard h1 {
+      color: #333;
+      font-weight: bold;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .dashboard p {
+      color: #666;
+      font-size: 16px;
+    }
+
+    /* Statistics stats-cards */
+    .stats-doctor {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+      width: 100%;
+    }
+
+    .stats-card {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 250px;
+      text-align: center;
+      transition: 0.3s ease-in-out;
+    }
+
+    .stats-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .stats-card h2 {
+      font-size: 18px;
+      font-weight: bolder;
+      color: #4caf4f;
+      margin-bottom: 10px;
+    }
+
+    .stats-card p {
+      font-size: 16px;
+      color: #555;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      margin-top: 30px;
+    }
+
+    .quick-actions button {
+      background: #4caf4f;
+      color: white;
+      padding: 12px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .quick-actions button:hover {
+      background: #388e3c;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 
 <body>
@@ -86,9 +170,33 @@
 
     </div>
   </header>
-  <main class="main">
 
-  </main>
+  <section class="dashboard">
+    <h1>Welcome, Doctor 💖</h1>
+    <p>Manage your patients efficiently with our healthcare system.</p>
+
+    <div class="stats-doctor">
+      <div class="stats-card">
+        <h2>Today's Appointments</h2>
+        <p>5 Pending</p>
+      </div>
+      <div class="stats-card">
+        <h2>Active Patients</h2>
+        <p>12 Ongoing Treatments</p>
+      </div>
+      <div class="stats-card">
+        <h2>Pending Prescriptions</h2>
+        <p>3 to Review</p>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <button onclick="alert('View Appointments')">📅 View Appointments</button>
+      <button onclick="alert('Search Medicines/Tests')">🔍 Search Medicines/Tests</button>
+      <button onclick="alert('Create Prescription')">📝 Share Blogs & Tips</button>
+    </div>
+  </section>
+
 
   <footer id="footer" class="footer light-background">
 
@@ -113,7 +221,7 @@
     </div>
 
   </footer>
-<script src="assets/js/student.js"></script>
+  <script src="assets/js/student.js"></script>
 
 </body>
 

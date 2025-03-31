@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students Homepage - UIU HealthCare</title>
+
+  <!-- Favicons -->
+  <link href="assets/img/title.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .diagnosebot-nav-modal {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 350px;
+            height: 100%;
+            background: white;
+            box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            transition: right 0.3s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .diagnosebot-nav-modal.open {
+            right: 0;
+        }
+
+        .close-btn {
+            background: none;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: x-large;
+            cursor: pointer;
+            float: right;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #a1dba4;
+            border-radius: 5px;
+        }
+
+        input:hover {
+            border: 3px solid #4CAF4F;
+        }
+
+        button {
+            background-color: #4CAF4F;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .result,
+        .solution {
+            margin-top: 15px;
+        }
+
+        .solution {
+            display: none;
+            background: #f9f9f9;
+            padding: 10px;
+            border-left: 5px solid #4CAF4F;
+        }
+
+        .suggestions {
+            border: 1px solid #ccc;
+            background: white;
+            max-height: 150px;
+            overflow-y: auto;
+            position: absolute;
+            width: 90%;
+            display: none;
+        }
+
+        .suggestions div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestions div:hover {
+            background: #a1dba4;
+        }
+  </style>
+</head>
+
+<body>
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-l position-relative d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <img src="assets/img/header-logo.png" alt="header-logo">
+        <h1 class="sitename">UIU<span> HealthCare</span></h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#services">Appointments</a></li>
+          <li><a href="#doctor">Doctor</a></li>
+          <li><a href="#blog-n-tips">Hospitals</a></li>
+          <li><a href="#about-us">Medicine & Test</a></li>
+          <li><a href="#contact">Blog</a></li>
+          <li><a href="#contact">About</a></li>
+          <li onclick="openNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px" alt="Diagnosis-tool"></li>
+
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <!-- Profile Dropdown -->
+      <div class="profile-container">
+        <div class="profile-btn" id="profileButton">
+          <img src="assets/img/me.jpg" alt="User Avatar">
+          <span>011221078</span>
+          <i class="bi bi-caret-down-fill"></i>
+        </div>
+        <div class="dropdown-menu" id="profileDropdown">
+          <div class="dropdown-header">
+            <img src="assets/img/me.jpg" alt="User Avatar">
+            <h5>Shariful Islam</h5>
+            <small>ID: 011221078</small>
+          </div>
+          <div class="dropdown-item">
+            <i class="bi bi-person"></i> My Profile
+          </div>
+          <div class="dropdown-item">
+            <i class="bi bi-bell"></i> Notification
+          </div>
+          <div class="dropdown-item">
+            <i class="bi bi-question-circle"></i> Help Center
+          </div>
+          <div class="dropdown-item">
+            <i class="bi bi-gear"></i> Settings and Privacy
+          </div>
+          <div class="dropdown-item">
+            <i class="bi bi-exclamation-triangle"></i> Report a problem
+          </div>
+          <div class="logout-btn">
+            <i class="bi bi-box-arrow-right"></i> Log out
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+  <main class="main">
+
+    <div class="diagnosebot-nav-modal" id="diagnosisNav">
+        <button class="close-btn" onclick="closeNav()">&times;</button>
+        <h2>Diagnosis Tool</h2>
+        <input type="text" id="searchInput" placeholder="Enter symptom or disease..." onkeyup="showSuggestions()">
+        <div class="suggestions" id="suggestionsBox"></div>
+        <button onclick="getDiagnosis()">Diagnose</button>
+        <div class="result" id="diagnosisResult"></div>
+        <br><button id="solutionBtn" onclick="showSolution()" style="display:none;">View Solution</button><br>
+        <div class="solution" id="solutionText"></div>
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("diagnosisNav").classList.add("open");
+        }
+
+        function closeNav() {
+            document.getElementById("diagnosisNav").classList.remove("open");
+        }
+
+        const diseaseData = {
+            "fever": {
+                name: "Fever",
+                symptoms: ["high temperature", "body ache", "shivering", "sweating", "chills"],
+                solution: [
+                    "Drink plenty of fluids and stay hydrated.",
+                    "Rest as much as possible and avoid strenuous activities.",
+                    "Take paracetamol to reduce fever symptoms.",
+                    "Use a damp cloth on the forehead for cooling."
+                ]
+            },
+            "cough": {
+                name: "Cough",
+                symptoms: ["dry cough", "wet cough", "throat irritation", "sore throat", "hoarseness"],
+                solution: [
+                    "Drink warm water with honey and lemon.",
+                    "Use a humidifier to keep the air moist.",
+                    "Avoid cold drinks and take herbal tea.",
+                    "If persistent, consult a doctor for medication."
+                ]
+            },
+            "heart attack": {
+                name: "Heart Attack (Myocardial Infarction)",
+                symptoms: [
+                    "chest pain", "chest discomfort", "pressure in chest", "tightness in chest", "squeezing in chest",
+                    "shortness of breath", "breathing difficulty",
+                    "pain in arms", "arm pain", "neck pain", "jaw pain", "back pain",
+                    "cold sweat", "nausea", "dizziness", "extreme fatigue", "lightheaded"
+                ],
+                solution: [
+                    "🚨 Call Emergency Services (911 or Local Ambulance) immediately. <a href='https://www.redcross.org/get-help/how-to-prepare-for-emergencies.html' target='_blank'>Emergency Guide</a>",
+                    "💊 Chew and swallow an aspirin (unless allergic). <a href='https://www.heart.org/en/health-topics/heart-attack/treatment-of-a-heart-attack' target='_blank'>Aspirin for Heart Attack</a>",
+                    "🛏️ Keep the person calm and encourage slow, deep breaths. <a href='https://www.verywellmind.com/deep-breathing-exercises-2584115' target='_blank'>Breathing Techniques</a>",
+                    "👕 Loosen any tight clothing to help with breathing. <a href='https://www.healthline.com/health/heart-attack-first-aid' target='_blank'>First Aid for Heart Attack</a>",
+                    "💗 If the person becomes unconscious, begin CPR immediately. <a href='https://www.redcross.org/take-a-class/cpr' target='_blank'>CPR Tutorial</a>",
+                    "⚡ Use an Automated External Defibrillator (AED) if available. <a href='https://www.heart.org/en/community/aha-federation/early-defibrillation' target='_blank'>AED Guide</a>"
+                ]
+            }
+        };
+
+        function getDiagnosis() {
+            let input = document.getElementById("searchInput").value.toLowerCase().trim();
+            let resultDiv = document.getElementById("diagnosisResult");
+            let solutionBtn = document.getElementById("solutionBtn");
+
+            if (diseaseData[input]) {
+                resultDiv.innerHTML = `Possible Condition: <strong>${diseaseData[input].name}</strong>`;
+                solutionBtn.style.display = "inline-block";
+                solutionBtn.setAttribute("data-disease", input);
+                return;
+            }
+
+            let matchedDisease = null;
+            for (let disease in diseaseData) {
+                if (diseaseData[disease].symptoms.includes(input)) {
+                    matchedDisease = disease;
+                    break;
+                }
+            }
+
+            if (matchedDisease) {
+                resultDiv.innerHTML = `Possible Condition: <strong>${diseaseData[matchedDisease].name}</strong>`;
+                solutionBtn.style.display = "inline-block";
+                solutionBtn.setAttribute("data-disease", matchedDisease);
+            } else {
+                resultDiv.innerHTML = "No matching disease found.";
+                solutionBtn.style.display = "none";
+            }
+        }
+
+        function showSolution() {
+            let disease = document.getElementById("solutionBtn").getAttribute("data-disease");
+            let solutionText = document.getElementById("solutionText");
+            let solutions = diseaseData[disease].solution.map(step => `<li>${step}</li>`).join("");
+            solutionText.innerHTML = `<strong>Step-by-Step Solution:</strong><ul>${solutions}</ul>`;
+            solutionText.style.display = "block";
+        }
+
+        function showSuggestions() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let suggestionsBox = document.getElementById("suggestionsBox");
+            let matches = Object.keys(diseaseData).filter(disease => disease.includes(input));
+
+            if (input === "" || matches.length === 0) {
+                suggestionsBox.style.display = "none";
+                return;
+            }
+
+            suggestionsBox.innerHTML = matches.map(match => `<div onclick="selectSuggestion('${match}')">${diseaseData[match].name}</div>`).join("");
+            suggestionsBox.style.display = "block";
+        }
+
+        function selectSuggestion(disease) {
+            document.getElementById("searchInput").value = diseaseData[disease].name;
+            document.getElementById("suggestionsBox").style.display = "none";
+        }
+    </script>
+  </main>
+
+  <footer id="footer" class="footer light-background">
+
+    <div class="container">
+      <div class="copyright text-center ">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">UIU HealthCare</strong> <span>All Rights
+            Reserved</span></p>
+      </div>
+      <div class="social-links d-flex justify-content-center">
+        <a href=""><i class="bi bi-twitter-x"></i></a>
+        <a href=""><i class="bi bi-facebook"></i></a>
+        <a href=""><i class="bi bi-instagram"></i></a>
+        <a href=""><i class="bi bi-linkedin"></i></a>
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        Designed by <a href="https://github.com/Sharif2023">Shariful Islam</a>
+      </div>
+    </div>
+  </footer>
+<script src="assets/js/student.js"></script>
+
+</body>
+
+</html>

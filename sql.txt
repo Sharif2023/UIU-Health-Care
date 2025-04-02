@@ -10,3 +10,23 @@ CREATE TABLE students (
     Gender ENUM('Male', 'Female', 'Other') NOT NULL,
     PasswordHash VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE medical_diagnose_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    disease VARCHAR(255),
+    symptoms TEXT,
+    first_aid_tips TEXT,
+    tutorial_link VARCHAR(500),
+    age INT,
+    gender ENUM('Male', 'Female', 'Other'),
+    weight_kg FLOAT,
+    recommended_specialist VARCHAR(255)
+);
+
+LOAD DATA INFILE 'C:/xampp/htdocs/UIU-Health-Care/medical_diagnose_data.csv'
+INTO TABLE medical_diagnoses
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(disease, symptoms, first_aid_tips, tutorial_link, age, gender, weight, recommended_specialist);

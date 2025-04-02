@@ -27,84 +27,85 @@
 
   <style>
     .diagnosebot-nav-modal {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            width: 350px;
-            height: 100%;
-            background: white;
-            box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            transition: right 0.3s ease-in-out;
-            overflow-y: auto;
-        }
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 350px;
+      height: 100%;
+      background: white;
+      box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      transition: right 0.3s ease-in-out;
+      overflow-y: auto;
+      z-index: 9999;
+    }
 
-        .diagnosebot-nav-modal.open {
-            right: 0;
-        }
+    .diagnosebot-nav-modal.open {
+      right: 0;
+    }
 
-        .close-btn {
-            background: none;
-            color: black;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: x-large;
-            cursor: pointer;
-            float: right;
-        }
+    .close-btn {
+      background: none;
+      color: black;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-size: x-large;
+      cursor: pointer;
+      float: right;
+    }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #a1dba4;
-            border-radius: 5px;
-        }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #a1dba4;
+      border-radius: 5px;
+    }
 
-        input:hover {
-            border: 3px solid #4CAF4F;
-        }
+    input:hover {
+      border: 3px solid #4CAF4F;
+    }
 
-        button {
-            background-color: #4CAF4F;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    button {
+      background-color: #4CAF4F;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-        .result,
-        .solution {
-            margin-top: 15px;
-        }
+    .result,
+    .solution {
+      margin-top: 15px;
+    }
 
-        .solution {
-            display: none;
-            background: #f9f9f9;
-            padding: 10px;
-            border-left: 5px solid #4CAF4F;
-        }
+    .solution {
+      display: none;
+      background: #f9f9f9;
+      padding: 10px;
+      border-left: 5px solid #4CAF4F;
+    }
 
-        .suggestions {
-            border: 1px solid #ccc;
-            background: white;
-            max-height: 150px;
-            overflow-y: auto;
-            position: absolute;
-            width: 90%;
-            display: none;
-        }
+    .suggestions {
+      border: 1px solid #ccc;
+      background: white;
+      max-height: 150px;
+      overflow-y: auto;
+      position: absolute;
+      width: 90%;
+      display: none;
+    }
 
-        .suggestions div {
-            padding: 10px;
-            cursor: pointer;
-        }
+    .suggestions div {
+      padding: 10px;
+      cursor: pointer;
+    }
 
-        .suggestions div:hover {
-            background: #a1dba4;
-        }
+    .suggestions div:hover {
+      background: #a1dba4;
+    }
   </style>
 </head>
 
@@ -126,7 +127,8 @@
           <li><a href="#about-us">Medicine & Test</a></li>
           <li><a href="#contact">Blog</a></li>
           <li><a href="#contact">About</a></li>
-          <li onclick="openNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px" alt="Diagnosis-tool"></li>
+          <li onclick="openNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px"
+              alt="Diagnosis-tool"></li>
 
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -170,121 +172,124 @@
   <main class="main">
 
     <div class="diagnosebot-nav-modal" id="diagnosisNav">
-        <button class="close-btn" onclick="closeNav()">&times;</button>
-        <h2>Diagnosis Tool</h2>
-        <input type="text" id="searchInput" placeholder="Enter symptom or disease..." onkeyup="showSuggestions()">
-        <div class="suggestions" id="suggestionsBox"></div>
-        <button onclick="getDiagnosis()">Diagnose</button>
-        <div class="result" id="diagnosisResult"></div>
-        <br><button id="solutionBtn" onclick="showSolution()" style="display:none;">View Solution</button><br>
-        <div class="solution" id="solutionText"></div>
+      <button class="close-btn" onclick="closeNav()">&times;</button>
+      <h2>Diagnosis Tool</h2>
+      <input type="text" id="searchInput" placeholder="Enter symptom or disease..." onkeyup="showSuggestions()">
+      <input type="number" id="ageInput" placeholder="Enter your age...">
+      <input type="number" id="weightInput" placeholder="Enter your weight (kg)...">
+
+      <select id="genderInput">
+        <option value="">Select Gender...</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+
+      <div class="suggestions" id="suggestionsBox"></div>
+      <button onclick="getDiagnosis()">Diagnose</button>
+      <div class="result" id="diagnosisResult"></div>
+      <br><button id="solutionBtn" onclick="showSolution()" style="display:none;">First Aid</button><br>
+      <div class="solution" id="solutionText"></div>
     </div>
 
     <script>
-        function openNav() {
-            document.getElementById("diagnosisNav").classList.add("open");
+      function openNav() {
+        document.getElementById("diagnosisNav").classList.add("open");
+      }
+
+      function closeNav() {
+        document.getElementById("diagnosisNav").classList.remove("open");
+      }
+
+      const diseaseData = {
+        "fever": {
+          name: "Fever",
+          symptoms: ["high temperature", "body ache", "shivering", "sweating", "chills"],
+          solution: ["Drink fluids", "Rest", "Take paracetamol"],
+          doctor: "General Physician"
+        },
+        "heart attack": {
+          name: "Heart Attack",
+          symptoms: ["chest pain", "shortness of breath", "nausea"],
+          solution: ["Call Emergency", "Take aspirin", "Stay calm"],
+          doctor: "Cardiologist"
+        },
+        "skin rash": {
+          name: "Skin Rash",
+          symptoms: ["red patches", "itching", "inflammation"],
+          solution: ["Apply antihistamine", "Avoid irritants", "Use moisturizer"],
+          doctor: "Dermatologist"
+        }
+      };
+
+
+      function getDiagnosis() {
+        let symptom = document.getElementById("searchInput").value.toLowerCase().trim();
+        let age = document.getElementById("ageInput").value;
+        let gender = document.getElementById("genderInput").value;
+        let weight = document.getElementById("weightInput").value;
+        let resultDiv = document.getElementById("diagnosisResult");
+        let solutionBtn = document.getElementById("solutionBtn");
+
+        if (!age || !gender || !weight) {
+          resultDiv.innerHTML = "Please enter your Age, Gender, and Weight.";
+          return;
         }
 
-        function closeNav() {
-            document.getElementById("diagnosisNav").classList.remove("open");
+        if (diseaseData[symptom]) {
+          let disease = diseaseData[symptom];
+          resultDiv.innerHTML = `Possible Condition: <strong>${disease.name}</strong> <br>
+        Recommended Doctor: <strong>${disease.doctor}</strong> <br>`;
+          solutionBtn.style.display = "inline-block";
+          solutionBtn.setAttribute("data-disease", symptom);
+          return;
         }
 
-        const diseaseData = {
-            "fever": {
-                name: "Fever",
-                symptoms: ["high temperature", "body ache", "shivering", "sweating", "chills"],
-                solution: [
-                    "Drink plenty of fluids and stay hydrated.",
-                    "Rest as much as possible and avoid strenuous activities.",
-                    "Take paracetamol to reduce fever symptoms.",
-                    "Use a damp cloth on the forehead for cooling."
-                ]
-            },
-            "cough": {
-                name: "Cough",
-                symptoms: ["dry cough", "wet cough", "throat irritation", "sore throat", "hoarseness"],
-                solution: [
-                    "Drink warm water with honey and lemon.",
-                    "Use a humidifier to keep the air moist.",
-                    "Avoid cold drinks and take herbal tea.",
-                    "If persistent, consult a doctor for medication."
-                ]
-            },
-            "heart attack": {
-                name: "Heart Attack (Myocardial Infarction)",
-                symptoms: [
-                    "chest pain", "chest discomfort", "pressure in chest", "tightness in chest", "squeezing in chest",
-                    "shortness of breath", "breathing difficulty",
-                    "pain in arms", "arm pain", "neck pain", "jaw pain", "back pain",
-                    "cold sweat", "nausea", "dizziness", "extreme fatigue", "lightheaded"
-                ],
-                solution: [
-                    "🚨 Call Emergency Services (911 or Local Ambulance) immediately. <a href='https://www.redcross.org/get-help/how-to-prepare-for-emergencies.html' target='_blank'>Emergency Guide</a>",
-                    "💊 Chew and swallow an aspirin (unless allergic). <a href='https://www.heart.org/en/health-topics/heart-attack/treatment-of-a-heart-attack' target='_blank'>Aspirin for Heart Attack</a>",
-                    "🛏️ Keep the person calm and encourage slow, deep breaths. <a href='https://www.verywellmind.com/deep-breathing-exercises-2584115' target='_blank'>Breathing Techniques</a>",
-                    "👕 Loosen any tight clothing to help with breathing. <a href='https://www.healthline.com/health/heart-attack-first-aid' target='_blank'>First Aid for Heart Attack</a>",
-                    "💗 If the person becomes unconscious, begin CPR immediately. <a href='https://www.redcross.org/take-a-class/cpr' target='_blank'>CPR Tutorial</a>",
-                    "⚡ Use an Automated External Defibrillator (AED) if available. <a href='https://www.heart.org/en/community/aha-federation/early-defibrillation' target='_blank'>AED Guide</a>"
-                ]
-            }
-        };
-
-        function getDiagnosis() {
-            let input = document.getElementById("searchInput").value.toLowerCase().trim();
-            let resultDiv = document.getElementById("diagnosisResult");
-            let solutionBtn = document.getElementById("solutionBtn");
-
-            if (diseaseData[input]) {
-                resultDiv.innerHTML = `Possible Condition: <strong>${diseaseData[input].name}</strong>`;
-                solutionBtn.style.display = "inline-block";
-                solutionBtn.setAttribute("data-disease", input);
-                return;
-            }
-
-            let matchedDisease = null;
-            for (let disease in diseaseData) {
-                if (diseaseData[disease].symptoms.includes(input)) {
-                    matchedDisease = disease;
-                    break;
-                }
-            }
-
-            if (matchedDisease) {
-                resultDiv.innerHTML = `Possible Condition: <strong>${diseaseData[matchedDisease].name}</strong>`;
-                solutionBtn.style.display = "inline-block";
-                solutionBtn.setAttribute("data-disease", matchedDisease);
-            } else {
-                resultDiv.innerHTML = "No matching disease found.";
-                solutionBtn.style.display = "none";
-            }
+        let matchedDisease = null;
+        for (let disease in diseaseData) {
+          if (diseaseData[disease].symptoms.includes(symptom)) {
+            matchedDisease = disease;
+            break;
+          }
         }
 
-        function showSolution() {
-            let disease = document.getElementById("solutionBtn").getAttribute("data-disease");
-            let solutionText = document.getElementById("solutionText");
-            let solutions = diseaseData[disease].solution.map(step => `<li>${step}</li>`).join("");
-            solutionText.innerHTML = `<strong>Step-by-Step Solution:</strong><ul>${solutions}</ul>`;
-            solutionText.style.display = "block";
+        if (matchedDisease) {
+          resultDiv.innerHTML = `Possible Condition: <strong>${diseaseData[matchedDisease].name}</strong><br>
+        Entered Weight: <strong>${weight} kg</strong>`;
+          solutionBtn.style.display = "inline-block";
+          solutionBtn.setAttribute("data-disease", matchedDisease);
+        } else {
+          resultDiv.innerHTML = "No matching disease found.";
+          solutionBtn.style.display = "none";
+        }
+      }
+
+      function showSolution() {
+        let disease = document.getElementById("solutionBtn").getAttribute("data-disease");
+        let solutionText = document.getElementById("solutionText");
+        let solutions = diseaseData[disease].solution.map(step => `<li>${step}</li>`).join("");
+        solutionText.innerHTML = `<strong>Step-by-Step Solution:</strong><ul>${solutions}</ul>`;
+        solutionText.style.display = "block";
+      }
+
+      function showSuggestions() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let suggestionsBox = document.getElementById("suggestionsBox");
+        let matches = Object.keys(diseaseData).filter(disease => disease.includes(input));
+
+        if (input === "" || matches.length === 0) {
+          suggestionsBox.style.display = "none";
+          return;
         }
 
-        function showSuggestions() {
-            let input = document.getElementById("searchInput").value.toLowerCase();
-            let suggestionsBox = document.getElementById("suggestionsBox");
-            let matches = Object.keys(diseaseData).filter(disease => disease.includes(input));
+        suggestionsBox.innerHTML = matches.map(match => `<div onclick="selectSuggestion('${match}')">${diseaseData[match].name}</div>`).join("");
+        suggestionsBox.style.display = "block";
+      }
 
-            if (input === "" || matches.length === 0) {
-                suggestionsBox.style.display = "none";
-                return;
-            }
-
-            suggestionsBox.innerHTML = matches.map(match => `<div onclick="selectSuggestion('${match}')">${diseaseData[match].name}</div>`).join("");
-            suggestionsBox.style.display = "block";
-        }
-
-        function selectSuggestion(disease) {
-            document.getElementById("searchInput").value = diseaseData[disease].name;
-            document.getElementById("suggestionsBox").style.display = "none";
-        }
+      function selectSuggestion(disease) {
+        document.getElementById("searchInput").value = diseaseData[disease].name;
+        document.getElementById("suggestionsBox").style.display = "none";
+      }
     </script>
   </main>
 
@@ -310,7 +315,7 @@
       </div>
     </div>
   </footer>
-<script src="assets/js/student.js"></script>
+  <script src="assets/js/student.js"></script>
 
 </body>
 

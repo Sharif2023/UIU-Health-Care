@@ -26,8 +26,8 @@ if (empty($searchTerm) || $age === null || $weight === null) {
 }
 
 // Find nearest lower age & weight
-$ageQuery = "SELECT MAX(age) as closest_age FROM medical_diagnose_data WHERE age <= $age";
-$weightQuery = "SELECT MAX(weight_kg) as closest_weight FROM medical_diagnose_data WHERE weight_kg <= $weight";
+$ageQuery = "SELECT MAX(age) as closest_age FROM medical_diagnoses WHERE age <= $age";
+$weightQuery = "SELECT MAX(weight) as closest_weight FROM medical_diagnoses WHERE weight <= $weight";
 
 $ageResult = $conn->query($ageQuery);
 $weightResult = $conn->query($weightQuery);
@@ -37,11 +37,10 @@ $closestWeight = $weightResult->fetch_assoc()['closest_weight'] ?? $weight;
 
 // Final query (case-insensitive match + fallback age/weight logic)
 $sql = "
-SELECT * FROM medical_diagnose_data
+SELECT * FROM medical_diagnoses
 WHERE (LOWER(disease) LIKE '%$searchTerm%' OR LOWER(symptoms) LIKE '%$searchTerm%')
-AND age = $closestAge
-AND weight_kg = $closestWeight
-LIMIT 50
+AND age = $closestAge AND weight = $closestWeight
+LIMIT 1
 ";
 
 $result = $conn->query($sql);

@@ -174,7 +174,7 @@
     <div class="diagnosebot-nav-modal" id="diagnosisNav">
       <button class="close-btn" onclick="closeNav()">&times;</button>
       <h2>Diagnosis Tool</h2>
-      <input type="text" id="searchInput" placeholder="Enter symptom or disease..." onkeyup="showSuggestions()">
+      <input type="text" id="searchInput" placeholder="Enter symptom or disease (e.g., fever, cough)" onkeyup="showSuggestions()">
       <input type="number" id="ageInput" placeholder="Enter your age...">
       <input type="number" id="weightInput" placeholder="Enter your weight (kg)...">
 
@@ -201,76 +201,65 @@
         document.getElementById("diagnosisNav").classList.remove("open");
       }
 
-      const diseaseData = {
-        "fever": {
-          name: "Fever",
-          symptoms: ["high temperature", "body ache", "shivering", "sweating", "chills"],
-          solution: ["Drink fluids", "Rest", "Take paracetamol"],
-          doctor: "General Physician"
-        },
-        "heart attack": {
-          name: "Heart Attack",
-          symptoms: ["chest pain", "shortness of breath", "nausea"],
-          solution: ["Call Emergency", "Take aspirin", "Stay calm"],
-          doctor: "Cardiologist"
-        },
-        "skin rash": {
-          name: "Skin Rash",
-          symptoms: ["red patches", "itching", "inflammation"],
-          solution: ["Apply antihistamine", "Avoid irritants", "Use moisturizer"],
-          doctor: "Dermatologist"
-        }
-      };
+      async function getDiagnosis() {
+        const symptom = document.getElementById("searchInput").value.toLowerCase().trim();
+        const age = document.getElementById("ageInput").value;
+        const gender = document.getElementById("genderInput").value;
+        const weight = document.getElementById("weightInput").value;
+        const resultDiv = document.getElementById("diagnosisResult");
+        const solutionBtn = document.getElementById("solutionBtn");
+        const solutionText = document.getElementById("solutionText");
 
-
-      function getDiagnosis() {
-        let symptom = document.getElementById("searchInput").value.toLowerCase().trim();
-        let age = document.getElementById("ageInput").value;
-        let gender = document.getElementById("genderInput").value;
-        let weight = document.getElementById("weightInput").value;
-        let resultDiv = document.getElementById("diagnosisResult");
-        let solutionBtn = document.getElementById("solutionBtn");
-
-        if (!age || !gender || !weight) {
-          resultDiv.innerHTML = "Please enter your Age, Gender, and Weight.";
+        if (!symptom || !age || !gender || !weight) {
+          resultDiv.innerHTML = "Please enter Symptom, Age, Gender, and Weight.";
           return;
         }
 
-        if (diseaseData[symptom]) {
-          let disease = diseaseData[symptom];
-          resultDiv.innerHTML = `Possible Condition: <strong>${disease.name}</strong> <br>
-        Recommended Doctor: <strong>${disease.doctor}</strong> <br>`;
-          solutionBtn.style.display = "inline-block";
-          solutionBtn.setAttribute("data-disease", symptom);
-          return;
-        }
+        try {
+          const response = await fetch(`fetch_diseases.php?query=${encodeURIComponent(symptom)}&age=${age}&weight=${weight}`);
+          const data = await response.json();
 
-        let matchedDisease = null;
-        for (let disease in diseaseData) {
-          if (diseaseData[disease].symptoms.includes(symptom)) {
-            matchedDisease = disease;
-            break;
+          if (!data || data.length === 0) {
+            resultDiv.innerHTML = "No matching medical conditions found.";
+            solutionBtn.style.display = "none";
+            solutionText.innerHTML = "";
+            return;
           }
-        }
 
-        if (matchedDisease) {
-          resultDiv.innerHTML = `Possible Condition: <strong>${diseaseData[matchedDisease].name}</strong><br>
-        Entered Weight: <strong>${weight} kg</strong>`;
+          const disease = data[0]; // show top match
+          resultDiv.innerHTML = `
+      <strong>Possible Condition:</strong> ${disease.disease}<br>
+      <strong>Recommended Doctor:</strong> ${disease.recommended_specialist}<br>
+      <strong>Gender:</strong> ${disease.gender}<br>
+      <strong>Age Range:</strong> ${disease.age} years<br>
+      <strong>Weight Range:</strong> ${disease.weight_kg} kg<br>
+      <strong>Symptoms:</strong> ${disease.symptoms}
+    `;
+
           solutionBtn.style.display = "inline-block";
-          solutionBtn.setAttribute("data-disease", matchedDisease);
-        } else {
-          resultDiv.innerHTML = "No matching disease found.";
-          solutionBtn.style.display = "none";
+          solutionBtn.setAttribute("data-firstaid", disease.first_aid_tips);
+          solutionBtn.setAttribute("data-link", disease.tutorial_link);
+          solutionText.innerHTML = "";
+
+        } catch (error) {
+          resultDiv.innerHTML = "Error fetching diagnosis data.";
+          console.error(error);
         }
       }
+
 
       function showSolution() {
-        let disease = document.getElementById("solutionBtn").getAttribute("data-disease");
-        let solutionText = document.getElementById("solutionText");
-        let solutions = diseaseData[disease].solution.map(step => `<li>${step}</li>`).join("");
-        solutionText.innerHTML = `<strong>Step-by-Step Solution:</strong><ul>${solutions}</ul>`;
+        const tips = document.getElementById("solutionBtn").getAttribute("data-firstaid");
+        const link = document.getElementById("solutionBtn").getAttribute("data-link");
+        const solutionText = document.getElementById("solutionText");
+
+        solutionText.innerHTML = `
+    <strong>First Aid Tips:</strong><br>${tips.replace(/\n/g, "<br>")}<br><br>
+    <a href="${link}" target="_blank" class="btn btn-primary">Watch Tutorial</a>
+  `;
         solutionText.style.display = "block";
       }
+
 
       function showSuggestions() {
         let input = document.getElementById("searchInput").value.toLowerCase();

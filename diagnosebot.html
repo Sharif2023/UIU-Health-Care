@@ -106,6 +106,29 @@
     .suggestions div:hover {
       background: #a1dba4;
     }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #a1dba4;
+      border-radius: 5px;
+      background-color: white;
+      color: #333;
+      font-size: 14px;
+      appearance: none;
+      /* for consistent look across browsers */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%234CAF4F" d="M6 8L0 0h12z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+    }
+
+    select:hover {
+      border: 3px solid #4CAF4F;
+    }
   </style>
 </head>
 
@@ -174,7 +197,8 @@
     <div class="diagnosebot-nav-modal" id="diagnosisNav">
       <button class="close-btn" onclick="closeNav()">&times;</button>
       <h2>Diagnosis Tool</h2>
-      <input type="text" id="searchInput" placeholder="Enter symptom or disease (e.g., fever, cough)" onkeyup="showSuggestions()">
+      <input type="text" id="searchInput" placeholder="Enter symptom or disease (e.g., fever, cough)"
+        onkeyup="showSuggestions()">
       <input type="number" id="ageInput" placeholder="Enter your age...">
       <input type="number" id="weightInput" placeholder="Enter your weight (kg)...">
 
@@ -232,7 +256,7 @@
       <strong>Recommended Doctor:</strong> ${disease.recommended_specialist}<br>
       <strong>Gender:</strong> ${disease.gender}<br>
       <strong>Age Range:</strong> ${disease.age} years<br>
-      <strong>Weight Range:</strong> ${disease.weight_kg} kg<br>
+      <strong>Weight Range:</strong> ${disease.weight} kg<br>
       <strong>Symptoms:</strong> ${disease.symptoms}
     `;
 

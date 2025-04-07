@@ -11,7 +11,7 @@ CREATE TABLE students (
     PasswordHash VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE medical_diagnose_data (
+CREATE TABLE medical_diagnoses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     disease VARCHAR(255),
     symptoms TEXT,
@@ -19,11 +19,11 @@ CREATE TABLE medical_diagnose_data (
     tutorial_link VARCHAR(500),
     age INT,
     gender ENUM('Male', 'Female', 'Other'),
-    weight_kg FLOAT,
+    weight FLOAT,
     recommended_specialist VARCHAR(255)
 );
 
-LOAD DATA INFILE 'C:/xampp/htdocs/UIU-Health-Care/medical_diagnose_data.csv'
+LOAD DATA INFILE 'C:/xampp/htdocs/UIU-Health-Care/medical_dataset.csv'
 INTO TABLE medical_diagnoses
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'

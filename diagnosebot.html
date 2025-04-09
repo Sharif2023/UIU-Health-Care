@@ -287,24 +287,43 @@
       }
 
 
-      function showSuggestions() {
-        let input = document.getElementById("searchInput").value.toLowerCase();
-        let suggestionsBox = document.getElementById("suggestionsBox");
-        let matches = Object.keys(diseaseData).filter(disease => disease.includes(input));
+      async function showSuggestions() {
+  const input = document.getElementById("searchInput").value.trim().toLowerCase();
+  const suggestionsBox = document.getElementById("suggestionsBox");
 
-        if (input === "" || matches.length === 0) {
-          suggestionsBox.style.display = "none";
-          return;
-        }
+  if (input.length === 0) {
+    suggestionsBox.style.display = "none";
+    return;
+  }
 
-        suggestionsBox.innerHTML = matches.map(match => `<div onclick="selectSuggestion('${match}')">${diseaseData[match].name}</div>`).join("");
-        suggestionsBox.style.display = "block";
-      }
+  try {
+    const response = await fetch(`fetch_diseases.php?query=${encodeURIComponent(input)}`);
+    const data = await response.json();
 
-      function selectSuggestion(disease) {
-        document.getElementById("searchInput").value = diseaseData[disease].name;
-        document.getElementById("suggestionsBox").style.display = "none";
-      }
+    if (!data || data.length === 0) {
+      suggestionsBox.style.display = "none";
+      return;
+    }
+
+    suggestionsBox.innerHTML = data.map(item => `
+      <div onclick="selectSuggestion('${item.symptoms.replace(/'/g, "\\'")}')">
+        <strong>${item.disease}</strong><br>
+        <small>${item.symptoms}</small>
+      </div>
+    `).join("");
+
+    suggestionsBox.style.display = "block";
+
+  } catch (error) {
+    console.error("Error fetching suggestions:", error);
+    suggestionsBox.style.display = "none";
+  }
+}
+
+function selectSuggestion(symptom) {
+  document.getElementById("searchInput").value = symptom;
+  document.getElementById("suggestionsBox").style.display = "none";
+}
     </script>
   </main>
 

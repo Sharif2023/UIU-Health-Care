@@ -20,6 +20,23 @@ $searchTerm = isset($_GET['query']) ? strtolower($conn->real_escape_string($_GET
 $age = isset($_GET['age']) ? intval($_GET['age']) : null;
 $weight = isset($_GET['weight']) ? floatval($_GET['weight']) : null;
 
+// === Case 1: Live suggestion only (query provided but no age/weight)
+if (!empty($searchTerm) && $age === null && $weight === null) {
+    $suggestions = [];
+    $stmt = $conn->prepare("SELECT disease, symptoms FROM medical_diagnoses WHERE LOWER(symptoms) LIKE CONCAT('%', ?, '%') LIMIT 5");
+    $stmt->bind_param("s", $searchTerm);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $suggestions[] = $row;
+    }
+
+    echo json_encode($suggestions);
+    exit;
+}
+
+// === Case 2: Full search with disease + symptom + age + weight
 if (empty($searchTerm) || $age === null || $weight === null) {
     echo json_encode(["error" => "Missing search term, age, or weight."]);
     exit;
@@ -35,7 +52,7 @@ $weightResult = $conn->query($weightQuery);
 $closestAge = $ageResult->fetch_assoc()['closest_age'] ?? $age;
 $closestWeight = $weightResult->fetch_assoc()['closest_weight'] ?? $weight;
 
-// Final query (case-insensitive match + fallback age/weight logic)
+// Final result query
 $sql = "
 SELECT * FROM medical_diagnoses
 WHERE (LOWER(disease) LIKE '%$searchTerm%' OR LOWER(symptoms) LIKE '%$searchTerm%')

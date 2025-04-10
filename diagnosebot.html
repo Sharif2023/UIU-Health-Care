@@ -44,7 +44,7 @@
       right: 0;
     }
 
-    .close-btn {
+    .bot-close-btn {
       background: none;
       color: black;
       border: none;
@@ -55,7 +55,7 @@
       float: right;
     }
 
-    input {
+    .botInput {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
@@ -63,17 +63,21 @@
       border-radius: 5px;
     }
 
-    input:hover {
+    .botInput:hover {
       border: 3px solid #4CAF4F;
     }
 
-    button {
+    .botButtonProperty {
       background-color: #4CAF4F;
       color: white;
       border: none;
       padding: 10px 15px;
       border-radius: 5px;
       cursor: pointer;
+    }
+
+    .botButtonProperty:hover {
+      background-color: #3ea73f;
     }
 
     .result,
@@ -107,7 +111,7 @@
       background: #a1dba4;
     }
 
-    select {
+    #botGenderInput {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
@@ -126,7 +130,7 @@
       background-size: 12px;
     }
 
-    select:hover {
+    #botGenderInput:hover {
       border: 3px solid #4CAF4F;
     }
   </style>
@@ -197,14 +201,14 @@
   <main class="main">
 
     <div class="diagnosebot-nav-modal" id="diagnosisNav">
-      <button class="close-btn" onclick="closeNav()">&times;</button>
+      <button class="bot-close-btn" onclick="closeNav()">&times;</button>
       <h2>Diagnosis Tool</h2>
       <input type="text" id="searchInput" placeholder="Enter symptom or disease (e.g., fever, cough)"
-        onkeyup="showSuggestions()">
-      <input type="number" id="ageInput" placeholder="Enter your age...">
-      <input type="number" id="weightInput" placeholder="Enter your weight (kg)...">
+        onkeyup="showSuggestions()" class="botInput">
+      <input type="number" id="ageInput" placeholder="Enter your age..." class="botInput">
+      <input type="number" id="weightInput" placeholder="Enter your weight (kg)..." class="botInput">
 
-      <select id="genderInput">
+      <select id="botGenderInput">
         <option value="">Select Gender...</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
@@ -212,9 +216,10 @@
       </select>
 
       <div class="suggestions" id="suggestionsBox"></div>
-      <button onclick="getDiagnosis()">Diagnose</button>
+      <button onclick="getDiagnosis()" class="botButtonProperty">Diagnose</button>
       <div class="result" id="diagnosisResult"></div>
-      <br><button id="solutionBtn" onclick="showSolution()" style="display:none;">First Aid</button><br>
+      <br><button id="solutionBtn" onclick="showSolution()" style="display:none;" class="botButtonProperty">First
+        Aid</button><br>
       <div class="solution" id="solutionText"></div>
     </div>
 
@@ -230,7 +235,7 @@
       async function getDiagnosis() {
         const symptom = document.getElementById("searchInput").value.toLowerCase().trim();
         const age = document.getElementById("ageInput").value;
-        const gender = document.getElementById("genderInput").value;
+        const gender = document.getElementById("botGenderInput").value;
         const weight = document.getElementById("weightInput").value;
         const resultDiv = document.getElementById("diagnosisResult");
         const solutionBtn = document.getElementById("solutionBtn");
@@ -281,49 +286,49 @@
 
         solutionText.innerHTML = `
     <strong>First Aid Tips:</strong><br>${tips.replace(/\n/g, "<br>")}<br><br>
-    <a href="${link}" target="_blank" class="btn btn-primary">Watch Tutorial</a>
+    <a href="${link}" target="_blank" class="btn btn-primary botButtonProperty">Watch Tutorial</a>
   `;
         solutionText.style.display = "block";
       }
 
 
       async function showSuggestions() {
-  const input = document.getElementById("searchInput").value.trim().toLowerCase();
-  const suggestionsBox = document.getElementById("suggestionsBox");
+        const input = document.getElementById("searchInput").value.trim().toLowerCase();
+        const suggestionsBox = document.getElementById("suggestionsBox");
 
-  if (input.length === 0) {
-    suggestionsBox.style.display = "none";
-    return;
-  }
+        if (input.length === 0) {
+          suggestionsBox.style.display = "none";
+          return;
+        }
 
-  try {
-    const response = await fetch(`fetch_diseases.php?query=${encodeURIComponent(input)}`);
-    const data = await response.json();
+        try {
+          const response = await fetch(`fetch_diseases.php?query=${encodeURIComponent(input)}`);
+          const data = await response.json();
 
-    if (!data || data.length === 0) {
-      suggestionsBox.style.display = "none";
-      return;
-    }
+          if (!data || data.length === 0) {
+            suggestionsBox.style.display = "none";
+            return;
+          }
 
-    suggestionsBox.innerHTML = data.map(item => `
+          suggestionsBox.innerHTML = data.map(item => `
       <div onclick="selectSuggestion('${item.symptoms.replace(/'/g, "\\'")}')">
         <strong>${item.disease}</strong><br>
         <small>${item.symptoms}</small>
       </div>
     `).join("");
 
-    suggestionsBox.style.display = "block";
+          suggestionsBox.style.display = "block";
 
-  } catch (error) {
-    console.error("Error fetching suggestions:", error);
-    suggestionsBox.style.display = "none";
-  }
-}
+        } catch (error) {
+          console.error("Error fetching suggestions:", error);
+          suggestionsBox.style.display = "none";
+        }
+      }
 
-function selectSuggestion(symptom) {
-  document.getElementById("searchInput").value = symptom;
-  document.getElementById("suggestionsBox").style.display = "none";
-}
+      function selectSuggestion(symptom) {
+        document.getElementById("searchInput").value = symptom;
+        document.getElementById("suggestionsBox").style.display = "none";
+      }
     </script>
   </main>
 

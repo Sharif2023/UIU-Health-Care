@@ -24,116 +24,6 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
-
-  <style>
-    .diagnosebot-nav-modal {
-      position: fixed;
-      top: 0;
-      right: -400px;
-      width: 350px;
-      height: 100%;
-      background: white;
-      box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      transition: right 0.3s ease-in-out;
-      overflow-y: auto;
-      z-index: 9999;
-    }
-
-    .diagnosebot-nav-modal.open {
-      right: 0;
-    }
-
-    .bot-close-btn {
-      background: none;
-      color: black;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      font-size: x-large;
-      cursor: pointer;
-      float: right;
-    }
-
-    .botInput {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #a1dba4;
-      border-radius: 5px;
-    }
-
-    .botInput:hover {
-      border: 3px solid #4CAF4F;
-    }
-
-    .botButtonProperty {
-      background-color: #4CAF4F;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .botButtonProperty:hover {
-      background-color: #3ea73f;
-    }
-
-    .result,
-    .solution {
-      margin-top: 15px;
-    }
-
-    .solution {
-      display: none;
-      background: #f9f9f9;
-      padding: 10px;
-      border-left: 5px solid #4CAF4F;
-    }
-
-    .suggestions {
-      border: 1px solid #ccc;
-      background: white;
-      max-height: 150px;
-      overflow-y: auto;
-      position: absolute;
-      width: 90%;
-      display: none;
-    }
-
-    .suggestions div {
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .suggestions div:hover {
-      background: #a1dba4;
-    }
-
-    #botGenderInput {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #a1dba4;
-      border-radius: 5px;
-      background-color: white;
-      color: #333;
-      font-size: 14px;
-      appearance: none;
-      /* for consistent look across browsers */
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%234CAF4F" d="M6 8L0 0h12z"/></svg>');
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      background-size: 12px;
-    }
-
-    #botGenderInput:hover {
-      border: 3px solid #4CAF4F;
-    }
-  </style>
 </head>
 
 <body>
@@ -154,7 +44,7 @@
           <li><a href="#about-us">Medicine & Test</a></li>
           <li><a href="#contact">Blog</a></li>
           <li><a href="#contact">About</a></li>
-          <li onclick="openNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px"
+          <li onclick="openDiagnoseNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px"
               alt="Diagnosis-tool"></li>
 
         </ul>
@@ -201,7 +91,7 @@
   <main class="main">
 
     <div class="diagnosebot-nav-modal" id="diagnosisNav">
-      <button class="bot-close-btn" onclick="closeNav()">&times;</button>
+      <button class="bot-close-btn" onclick="closeDiagnoseNav()">&times;</button>
       <h2>Diagnosis Tool</h2>
       <input type="text" id="searchInput" placeholder="Enter symptom or disease (e.g., fever, cough)"
         onkeyup="showSuggestions()" class="botInput">
@@ -224,11 +114,11 @@
     </div>
 
     <script>
-      function openNav() {
+      function openDiagnoseNav() {
         document.getElementById("diagnosisNav").classList.add("open");
       }
 
-      function closeNav() {
+      function closeDiagnoseNav() {
         document.getElementById("diagnosisNav").classList.remove("open");
       }
 

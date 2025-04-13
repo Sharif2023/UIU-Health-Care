@@ -24,6 +24,8 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+  <!--Javascript-->
+  <script src="assets/js/student.js"></script>
 </head>
 
 <body>
@@ -44,7 +46,7 @@
           <li><a href="#about-us">Medicine & Test</a></li>
           <li><a href="#contact">Blog</a></li>
           <li><a href="#contact">About</a></li>
-          <li><img src="assets/img/diagnose-bot.png" height="40px" width="40px" alt="Diagnosis-tool"></li>
+          <li onclick="openDiagnoseNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px" alt="Diagnosis-tool"></li>
 
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -86,7 +88,29 @@
     </div>
   </header>
   <main class="main">
+    <!--Code of DiagnoseBot-->
+    <div class="diagnosebot-nav-modal" id="diagnosisNav">
+      <button class="bot-close-btn" onclick="closeDiagnoseNav()">&times;</button>
+      <h2>Diagnosis Tool</h2>
+      <input type="text" id="searchInput" placeholder="Enter symptom or disease (e.g., fever, cough)"
+        onkeyup="showSuggestions()" class="botInput">
+      <input type="number" id="ageInput" placeholder="Enter your age..." class="botInput">
+      <input type="number" id="weightInput" placeholder="Enter your weight (kg)..." class="botInput">
 
+      <select id="botGenderInput">
+        <option value="">Select Gender...</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+
+      <div class="suggestions" id="suggestionsBox"></div>
+      <button onclick="getDiagnosis()" class="botButtonProperty">Diagnose</button>
+      <div class="result" id="diagnosisResult"></div>
+      <br><button id="solutionBtn" onclick="showSolution()" style="display:none;" class="botButtonProperty">First
+        Aid</button><br>
+      <div class="solution" id="solutionText"></div>
+    </div>
   </main>
 
   <footer id="footer" class="footer light-background">
@@ -112,7 +136,7 @@
     </div>
 
   </footer>
-<script src="assets/js/student.js"></script>
+  <script src="assets/js/student.js"></script>
 
 </body>
 

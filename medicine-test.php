@@ -13,17 +13,19 @@ if ($conn->connect_error) {
   die(json_encode(['error' => 'Database connection failed']));
 }
 
-// Get parameters
-$type = $_GET['type'] ?? 'medicine'; // default to 'medicine'
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$search = isset($_GET['search']) ? $_GET['search'] : '';
+// Get and sanitize parameters
+$type = $_GET['type'] ?? 'medicine';
+$type = ($type === 'test') ? 'test' : 'medicine';
+
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $itemsPerPage = 15;
 $offset = ($page - 1) * $itemsPerPage;
 
-// Search term
+// Prepare search term
 $searchTerm = "%" . $search . "%";
 
-// Query based on type
+// Query and fetch data
 if ($type === 'medicine') {
   $stmt = $conn->prepare("SELECT * FROM medicines WHERE medicine_name LIKE ? LIMIT ?, ?");
 } else {
@@ -35,11 +37,19 @@ $result = $stmt->get_result();
 
 $items = [];
 while ($row = $result->fetch_assoc()) {
-  $items[] = [
-    'name' => $type === 'medicine' ? $row['medicine_name'] : $row['test_name'],
-    "description" => "Generic: " . $row["generic_name"] . "<br>Strength: " . $row["strength"],
-    'price' => $row['price']
-  ];
+  if ($type === 'medicine') {
+    $items[] = [
+      'name' => $row['medicine_name'],
+      'description' => "Generic: " . $row['generic_name'] . "<br>Strength: " . $row['strength'],
+      'price' => $row['price']
+    ];
+  } else {
+    $items[] = [
+      'name' => $row['test_name'],
+      'description' => "Normal Range: " . $row['normal_range'] . "<br>Details: " . $row['details'],
+      'price' => $row['cost_in_tk']
+    ];
+  }
 }
 
 // Get total count for pagination

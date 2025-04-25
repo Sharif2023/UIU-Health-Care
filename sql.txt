@@ -30,3 +30,21 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
 (disease, symptoms, first_aid_tips, tutorial_link, age, gender, weight, recommended_specialist);
+
+CREATE TABLE tests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    test_name VARCHAR(255),
+    normal_range VARCHAR(255),
+    cost_in_tk DECIMAL(10,2),
+    details TEXT
+);
+
+LOAD DATA INFILE 'C:/xampp/htdocs/UIU-Health-Care/Hospital_Test_Dataset.csv'
+INTO TABLE tests
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(test_name, normal_range, cost_in_tk, details);
+
+

@@ -27,6 +27,68 @@
 
   <style>
     /*CSS Code have to Starts from Here and id/class name should be unique according to page name */
+    .med-test-container {
+      margin-top: 50px;
+      padding: 20px;
+    }
+
+    .med-test-tabs {
+      display: flex;
+      justify-content: flex-start;
+      gap: 20px;
+    }
+
+    .med-test-tabs button {
+      padding: 10px 20px;
+      cursor: pointer;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+
+    .med-test-tabs button.active {
+      background-color: #0056b3;
+    }
+
+    .med-test-search {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .med-test-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px;
+      border-radius: 8px;
+    }
+
+    .med-test-card h4 {
+      margin-bottom: 10px;
+    }
+
+    .med-test-card p {
+      margin-bottom: 15px;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .pagination button {
+      padding: 5px 10px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    .pagination button.disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 
@@ -41,13 +103,13 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="homepagestudent.html">Home</a></li>
           <li><a href="#services">Appointments</a></li>
           <li><a href="#doctor">Doctor</a></li>
           <li><a href="#blog-n-tips">Hospitals</a></li>
-          <li><a href="#about-us">Medicine & Test</a></li>
+          <li><a href="medicine-test.html" class="active">Medicine & Test</a></li>
           <li><a href="#contact">Blog</a></li>
-          <li><a href="#contact">About</a></li>
+          <li><a href="about.html">About</a></li>
           <li onclick="openDiagnoseNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px"
               alt="Diagnosis-tool"></li>
 
@@ -90,7 +152,7 @@
 
     </div>
   </header>
-  <main class="main">
+  <main class="med-test-container">
     <!--Code of DiagnoseBot-->
     <div class="diagnosebot-nav-modal" id="diagnosisNav">
       <button class="bot-close-btn" onclick="closeDiagnoseNav()">&times;</button>
@@ -116,6 +178,26 @@
     </div>
 
     <!--Code have to Starts from Here and id/class name should be unique according to page name-->
+    <div class="med-test-tabs">
+      <button id="medicineButton" class="active" onclick="showContent('medicine')">Medicine</button>
+      <button id="testButton" onclick="showContent('test')">Test</button>
+    </div>
+
+    <div class="med-test-search">
+      <input type="text" id="searchBox" placeholder="Search..." onkeyup="searchData()">
+    </div>
+
+    <div id="medicineContent" class="med-test-content">
+      <!-- Medicine data will be loaded here -->
+    </div>
+
+    <div id="testContent" class="med-test-content" style="display: none;">
+      <!-- Test data will be loaded here -->
+    </div>
+
+    <div class="pagination" id="pagination">
+      <!-- Pagination buttons will be loaded here -->
+    </div>
 
   </main>
 
@@ -142,8 +224,90 @@
     </div>
 
   </footer>
-    <!--Javascript-->
-    <script src="assets/js/student.js"></script>
+  <!--Javascript-->
+  <script src="assets/js/student.js"></script>
+  <script>
+    let currentPage = 1;
+    let currentType = 'medicine';
+
+    function showContent(type) {
+      currentType = type;
+      currentPage = 1;
+
+      document.getElementById('medicineContent').style.display = type === 'medicine' ? 'block' : 'none';
+      document.getElementById('testContent').style.display = type === 'test' ? 'block' : 'none';
+
+      document.getElementById('medicineButton').classList.toggle('active', type === 'medicine');
+      document.getElementById('testButton').classList.toggle('active', type === 'test');
+
+      loadData(); // reload data for new type
+    }
+
+    function loadData() {
+      const type = currentType;
+      const searchQuery = document.getElementById('searchBox').value;
+
+      fetch(`medicine-test.php?type=${type}&page=${currentPage}&search=${encodeURIComponent(searchQuery)}`)
+        .then(response => response.json())
+        .then(data => {
+          const contentDiv = document.getElementById(`${type}Content`);
+          contentDiv.innerHTML = '';
+
+          if (data.items.length === 0) {
+            contentDiv.innerHTML = "<p>No data found.</p>";
+            document.getElementById('pagination').innerHTML = '';
+            return;
+          }
+
+          data.items.forEach(item => {
+            const card = document.createElement('div');
+            card.classList.add('med-test-card');
+            card.innerHTML = `
+                <h4><strong>${item.name}</strong></h4>
+                <p>${item.description}</p>
+                <p><strong>Price:</strong> ${item.price} TK</p>
+              `;
+            contentDiv.appendChild(card);
+          });
+
+          updatePagination(data.pages);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function updatePagination(totalPages) {
+      const paginationDiv = document.getElementById('pagination');
+      paginationDiv.innerHTML = '';
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.innerText = i;
+
+        if (i === currentPage) {
+          pageBtn.classList.add('disabled');
+        } else {
+          pageBtn.onclick = () => {
+            currentPage = i;
+            loadData();
+          };
+        }
+
+        paginationDiv.appendChild(pageBtn);
+      }
+    }
+
+    function searchData() {
+      currentPage = 1;
+      loadData();
+    }
+
+    // Initial load
+    window.onload = () => {
+      showContent('medicine'); // default
+    };
+  </script>
 
 </body>
 

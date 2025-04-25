@@ -47,4 +47,25 @@ LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
 (test_name, normal_range, cost_in_tk, details);
 
+CREATE TABLE medicines (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    medicine_name VARCHAR(255),
+    category_name VARCHAR(255),
+    slug VARCHAR(255),
+    generic_name VARCHAR(255),
+    strength VARCHAR(100),
+    manufacturer_name VARCHAR(255),
+    unit VARCHAR(100),
+    unit_size VARCHAR(100),
+    price DECIMAL(10,2)
+);
+
+LOAD DATA INFILE 'C:/xampp/htdocs/UIU-Health-Care/all_medicine_and_drug_price_data(20k)_Bangladesh.csv'
+INTO TABLE medicines
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(medicine_name, category_name, slug, generic_name, strength, manufacturer_name, unit, unit_size, price);
+
 

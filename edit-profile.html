@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students Homepage - UIU HealthCare</title>
+    <title>Edit Student Profile - UIU HealthCare</title>
 
     <!-- Favicons -->
     <link href="assets/img/title.png" rel="icon">
@@ -25,77 +25,89 @@
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
 
-    <!--Cdn for Edit Profile-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
 
     <style>
-        .edit-pro-container {
-            background: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+        /* Container */
+        .profile-page-wrapper {
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            padding: 40px;
         }
 
-        .edit-pro-sidebar {
-            background: #f8f9fa;
-            padding: 20px;
+        .profile-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
-        .edit-pro-profile-img {
-            margin-left: 6rem;;
-            object-fit: cover;
-            height: 150px;
+        /* Sidebar */
+        .profile-sidebar {
+            background: #e9f5ee;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .profile-avatar {
             width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 15px;
         }
 
-        .edit-pro-upload-btn {
+        .profile-upload-btn {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 14px;
             cursor: pointer;
+            color: #28a745;
         }
 
-        .edit-pro-name {
+        .profile-name {
             font-size: 22px;
-            font-weight: 700;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
-        .edit-pro-email,
-        .edit-pro-id {
+        .profile-email,
+        .profile-studentid {
             font-size: 14px;
             color: #6c757d;
-            /* Bootstrap text-muted color */
-            margin-bottom: 2px;
         }
 
-        .edit-pro-header h4 {
-            font-weight: 600;
-            color: #4caf50;
+        /* Form */
+        .profile-form-section {
+            padding: 30px;
         }
 
-        .edit-pro-label {
-            font-size: 13px;
+        .profile-form-title {
+            font-weight: 700;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+
+        .profile-input-label {
+            font-size: 14px;
             font-weight: 500;
-            color: #555;
+            color: #333;
         }
 
-        .edit-pro-input {
-            background: #f1f1f1;
+        .profile-input-field {
+            background-color: #f1f1f1;
         }
 
-        .edit-pro-input:focus {
-            background: #fff;
+        .profile-input-field:focus {
+            background-color: #ffffff;
+            border-color: #28a745;
             box-shadow: none;
-            border-color: #4caf50;
         }
 
-        .edit-pro-save-btn {
+        .profile-save-btn {
+            margin-top: 30px;
             padding: 10px 30px;
-            font-weight: 600;
-            border-radius: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .edit-pro-container {
-                margin: 10px;
-            }
+            font-weight: bold;
+            border-radius: 25px;
         }
     </style>
 </head>
@@ -111,7 +123,7 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="homepagestudent.html">Home</a></li>
+                    <li><a href="homepagestudent.html" class="active">Home</a></li>
                     <li><a href="#services">Appointments</a></li>
                     <li><a href="#doctor">Doctor</a></li>
                     <li><a href="#blog-n-tips">Hospitals</a></li>
@@ -137,9 +149,11 @@
                         <h5>Shariful Islam</h5>
                         <small>ID: 011221078</small>
                     </div>
-                    <div class="dropdown-item">
-                        <i class="bi bi-person"></i> My Profile
-                    </div>
+                    <a href="student-profile.html">
+                        <div class="dropdown-item">
+                            <i class="bi bi-person"></i> My Profile
+                        </div>
+                    </a>
                     <div class="dropdown-item">
                         <i class="bi bi-bell"></i> Notification
                     </div>
@@ -186,119 +200,126 @@
         </div>
 
         <!--Code have to Starts from Here and id/class name should be unique according to page name-->
-        <div class="container rounded bg-white mt-5 mb-5 edit-pro-container">
-            <div class="row">
-                <!-- Profile Sidebar -->
-                <div class="col-md-4 border-right edit-pro-sidebar">
-                    <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                        <div class="edit-pro-img-wrapper">
-                            <img id="edit-pro-profile-preview" class="rounded-circle mt-5 edit-pro-profile-img"
-                                width="150px"
-                                src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-                                alt="Profile Picture">
-                            <label for="edit-pro-profile-upload"
-                                class="edit-pro-upload-btn mt-2 btn btn-outline-success btn-sm">Change Photo</label>
-                            <input id="edit-pro-profile-upload" type="file" accept="image/*" class="d-none">
+        <section class="profile-page-wrapper">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10 profile-card">
+                        <div class="row g-0">
+
+                            <!-- Sidebar -->
+                            <div class="col-md-4 profile-sidebar">
+                                <img src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+                                    alt="Profile Picture" class="profile-avatar" id="profilePicturePreview">
+                                <br>
+                                <label for="profilePictureUpload" class="profile-upload-btn">Change Photo</label>
+                                <input type="file" id="profilePictureUpload" accept="image/*" class="d-none">
+
+                                <div class="profile-name">Shariful Islam</div>
+                                <div class="profile-email">shariful@student.uiu.ac.bd</div>
+                                <div class="profile-studentid">ID: 011221078</div>
+                            </div>
+
+                            <!-- Form Section -->
+                            <div class="col-md-8 profile-form-section">
+                                <h4 class="profile-form-title">Edit Profile</h4>
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="profile-input-label">First Name</label>
+                                            <input type="text" class="form-control profile-input-field"
+                                                placeholder="First Name">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="profile-input-label">Last Name</label>
+                                            <input type="text" class="form-control profile-input-field"
+                                                placeholder="Last Name">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="profile-input-label">Mobile Number</label>
+                                            <input type="text" class="form-control profile-input-field"
+                                                placeholder="Mobile Number">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="profile-input-label">Height (ft.)</label>
+                                            <input type="text" class="form-control profile-input-field"
+                                                placeholder="Height">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="profile-input-label">Date of Birth</label>
+                                            <input type="date" class="form-control profile-input-field">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="profile-input-label">Blood Group</label>
+                                            <select class="form-control profile-input-field">
+                                                <option disabled selected>Select Blood Group</option>
+                                                <option>A+</option>
+                                                <option>A-</option>
+                                                <option>B+</option>
+                                                <option>B-</option>
+                                                <option>O+</option>
+                                                <option>O-</option>
+                                                <option>AB+</option>
+                                                <option>AB-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="profile-input-label">Address</label>
+                                        <input type="text" class="form-control profile-input-field"
+                                            placeholder="Enter Address">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="profile-input-label">Emergency Contact</label>
+                                        <input type="text" class="form-control profile-input-field"
+                                            placeholder="Emergency Contact Number">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="profile-input-label">Email</label>
+                                            <input type="email" class="form-control profile-input-field"
+                                                value="shariful@student.uiu.ac.bd" disabled>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="profile-input-label">Student ID</label>
+                                            <input type="text" class="form-control profile-input-field"
+                                                value="011221078" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-success profile-save-btn">Save
+                                            Changes</button>
+                                    </div>
+
+                                </form>
+                            </div>
+
                         </div>
-                        <div class="mt-3 text-center">
-                            <h5 class="mb-1 edit-pro-name">Shariful Islam</h5>
-                            <p class="text-muted mb-1 edit-pro-email">shariful@student.uiu.ac.bd</p>
-                            <p class="text-muted edit-pro-id">ID: 011221078</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Profile Form -->
-                <div class="col-md-8 edit-pro-form-section">
-                    <div class="p-3 py-5">
-                        <div class="d-flex justify-content-between align-items-center mb-3 edit-pro-header">
-                            <h4 class="text-right">Edit Profile</h4>
-                        </div>
-                        <form>
-                            <div class="row mt-2">
-                                <div class="col-md-6">
-                                    <label class="edit-pro-label">First Name</label>
-                                    <input type="text" class="form-control edit-pro-input"
-                                        placeholder="Enter First Name" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="edit-pro-label">Last Name</label>
-                                    <input type="text" class="form-control edit-pro-input" placeholder="Enter Last Name"
-                                        value="">
-                                </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <label class="edit-pro-label">Mobile Number</label>
-                                    <input type="text" class="form-control edit-pro-input"
-                                        placeholder="Enter Mobile Number" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="edit-pro-label">Height</label>
-                                    <input type="text" class="form-control edit-pro-input"
-                                        placeholder="Enter Your Height (ft.)" value="">
-                                </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <label class="edit-pro-label">Date of Birth</label>
-                                    <input type="date" class="form-control edit-pro-input" value="">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="edit-pro-label">Blood Group</label>
-                                    <select class="form-control edit-pro-input">
-                                        <option selected disabled>Select Blood Group</option>
-                                        <option>A+</option>
-                                        <option>A-</option>
-                                        <option>B+</option>
-                                        <option>B-</option>
-                                        <option>O+</option>
-                                        <option>O-</option>
-                                        <option>AB+</option>
-                                        <option>AB-</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <label class="edit-pro-label">Address</label>
-                                    <input type="text" class="form-control edit-pro-input" placeholder="Enter Address"
-                                        value="">
-                                </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <label class="edit-pro-label">Emergency Contact Number</label>
-                                    <input type="text" class="form-control edit-pro-input"
-                                        placeholder="Enter Emergency Contact" value="">
-                                </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-md-12">
-                                    <label class="edit-pro-label">Email</label>
-                                    <input type="email" class="form-control edit-pro-input"
-                                        value="shariful@student.uiu.ac.bd" disabled>
-                                </div>
-                                <div class="col-md-12 mt-2">
-                                    <label class="edit-pro-label">Student ID</label>
-                                    <input type="text" class="form-control edit-pro-input" value="011221078" disabled>
-                                </div>
-                            </div>
-
-                            <div class="mt-5 text-center">
-                                <button class="btn btn-success profile-button edit-pro-save-btn" type="submit">Save
-                                    Profile</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+        <!-- JS for changing profile picture -->
+        <script>
+            const profilePictureUpload = document.getElementById('profilePictureUpload');
+            const profilePicturePreview = document.getElementById('profilePicturePreview');
+
+            profilePictureUpload.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    profilePicturePreview.src = URL.createObjectURL(file);
+                }
+            });
+        </script>
     </main>
 
     <footer id="footer" class="footer light-background">

@@ -25,20 +25,86 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $mobile = $_POST['mobile'] ?? '';
+    $height = $_POST['height'] ?? '';
+    $bloodGroup = $_POST['bloodGroup'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $emergencyContact = $_POST['emergencyContact'] ?? '';
+
+    // Fetch existing student details FIRST
+    // Fetch current profile picture from DB
+    $checkSql = "SELECT ProfilePicture FROM student_details WHERE StudentID = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("s", $studentID);
+    $checkStmt->execute();
+    $checkResult = $checkStmt->get_result();
+    $checkData = $checkResult->fetch_assoc();
+    $oldProfilePicture = $checkData['ProfilePicture'] ?? null;
+
+    $profilePicture = $oldProfilePicture;
+
+    // Handle Upload
+    if (isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] === 0) {
+        $uploadDir = 'uploads/';
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+        $fileName = uniqid() . "_" . basename($_FILES['profilePicture']['name']);
+        $uploadFilePath = $uploadDir . $fileName;
+
+        if (move_uploaded_file($_FILES['profilePicture']['tmp_name'], $uploadFilePath)) {
+            $profilePicture = $uploadFilePath;
+        }
+    }
+
+    // Update or Insert
+    if ($checkData) {
+        $updateSql = "UPDATE student_details 
+                      SET Mobile=?, Height=?, BloodGroup=?, Address=?, EmergencyContact=?, ProfilePicture=?
+                      WHERE StudentID=?";
+        $updateStmt = $conn->prepare($updateSql);
+        $updateStmt->bind_param("sssssss", $mobile, $height, $bloodGroup, $address, $emergencyContact, $profilePicture, $studentID);
+        $updateStmt->execute();
+    } else {
+        $insertSql = "INSERT INTO student_details (StudentID, Mobile, Height, BloodGroup, Address, EmergencyContact, ProfilePicture)
+                      VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $insertStmt = $conn->prepare($insertSql);
+        $insertStmt->bind_param("sssssss", $studentID, $mobile, $height, $bloodGroup, $address, $emergencyContact, $profilePicture);
+        $insertStmt->execute();
+    }
+    
+
+    // Redirect
+    header("Location: student-profile.php");
+    exit();
+}
+
 // Get the student's email
 $email = "Not Provided"; // Default value if not found
-$sql = "SELECT email FROM students WHERE studentID = ?";
+
+// Fetch existing student info (students + student_details)
+$sql = "SELECT s.Email, s.FullName, s.Age, s.Gender, d.Mobile, d.Height, d.BloodGroup, d.Address, d.EmergencyContact, d.ProfilePicture
+        FROM students s
+        LEFT JOIN student_details d ON s.StudentID = d.StudentID
+        WHERE s.StudentID = ?";
+
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $studentID);
 $stmt->execute();
-$stmt->bind_result($fetchedEmail);
+$result = $stmt->get_result();
+$student = $result->fetch_assoc();
 
-if ($stmt->fetch()) {
-    $email = $fetchedEmail;
-}
+$email = $student['Email'] ?? 'Not Provided';
 
 $stmt->close();
 $conn->close();
+
+$dropdownProfilePicture = $student['ProfilePicture'] ?? '';
+
+if (empty($dropdownProfilePicture)) {
+    $dropdownProfilePicture = "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
+}
 
 ?>
 
@@ -183,13 +249,13 @@ $conn->close();
             <!-- Profile Dropdown -->
             <div class="profile-container">
                 <div class="profile-btn" id="profileButton">
-                    <img src="assets/img/me.jpg" alt="User Avatar">
+                    <img src="<?php echo htmlspecialchars($dropdownProfilePicture); ?>" alt="User Avatar">
                     <span><?php echo htmlspecialchars($studentID); ?></span>
                     <i class="bi bi-caret-down-fill"></i>
                 </div>
                 <div class="dropdown-menu" id="profileDropdown">
                     <div class="dropdown-header">
-                        <img src="assets/img/me.jpg" alt="User Avatar">
+                        <img src="<?php echo htmlspecialchars($dropdownProfilePicture); ?>" alt="User Avatar">
                         <h5><?php echo htmlspecialchars($fullName); ?></h5>
                         <small>ID: <?php echo htmlspecialchars($studentID); ?></small>
                     </div>
@@ -210,9 +276,11 @@ $conn->close();
                     <div class="dropdown-item">
                         <i class="bi bi-exclamation-triangle"></i> Report a problem
                     </div>
-                    <div class="logout-btn">
-                        <i class="bi bi-box-arrow-right"></i> Log out
-                    </div>
+                    <a href="login-signup.html">
+            <div class="logout-btn">
+              <i class="bi bi-box-arrow-right"></i> Log out
+            </div>
+          </a>
                 </div>
             </div>
 
@@ -248,30 +316,30 @@ $conn->close();
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-10 profile-card">
-                        <div class="row g-0">
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="row g-0">
 
-                            <!-- Sidebar -->
-                            <div class="col-md-4 profile-sidebar">
-                                <img src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-                                    alt="Profile Picture" class="profile-avatar" id="profilePicturePreview">
-                                <br>
-                                <label for="profilePictureUpload" class="profile-upload-btn">Change Photo</label>
-                                <input type="file" id="profilePictureUpload" accept="image/*" class="d-none">
+                                <!-- Sidebar -->
+                                <div class="col-md-4 profile-sidebar">
+                                    <img src="<?php echo htmlspecialchars($student['ProfilePicture'] ?? 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg'); ?>"
+                                        alt="Profile Picture" class="profile-avatar" id="profilePicturePreview">
+                                    <br>
+                                    <label for="profilePictureUpload" class="profile-upload-btn">Change Photo</label>
+                                    <input type="file" name="profilePicture" id="profilePictureUpload" accept="image/*" class="d-none">
+                                    <div class="profile-name"><?php echo htmlspecialchars($fullName); ?></div>
+                                    <div class="profile-email">Email: <?php echo htmlspecialchars($email); ?></div>
+                                    <div class="profile-studentid">ID: <?php echo htmlspecialchars($studentID); ?></div>
+                                </div>
 
-                                <div class="profile-name"><?php echo htmlspecialchars($fullName); ?></div>
-                                <div class="profile-email">Email: <?php echo htmlspecialchars($email); ?></div>
-                                <div class="profile-studentid">ID: <?php echo htmlspecialchars($studentID); ?></div>
-                            </div>
+                                <!-- Form Section -->
+                                <div class="col-md-8 profile-form-section">
+                                    <h4 class="profile-form-title">Edit Profile</h4>
 
-                            <!-- Form Section -->
-                            <div class="col-md-8 profile-form-section">
-                                <h4 class="profile-form-title">Edit Profile</h4>
-                                <form>
                                     <div class="row">
                                         <div class="mb-3">
                                             <label class="profile-input-label">Full Name</label>
-                                            <input type="text" class="form-control profile-input-field"
-                                                value="<?php echo htmlspecialchars($fullName); ?>">
+                                            <input type="text" class="form-control profile-input-field" name="fullName" value="<?php echo htmlspecialchars($fullName); ?>">
+
                                         </div>
                                     </div>
 
@@ -279,12 +347,12 @@ $conn->close();
                                         <div class="col-md-6 mb-3">
                                             <label class="profile-input-label">Mobile Number</label>
                                             <input type="text" class="form-control profile-input-field"
-                                                placeholder="Mobile Number">
+                                                value="<?php echo htmlspecialchars($student['Mobile'] ?? ''); ?>" name="mobile">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="profile-input-label">Height (ft.)</label>
                                             <input type="text" class="form-control profile-input-field"
-                                                placeholder="Height">
+                                                value="<?php echo htmlspecialchars($student['Height'] ?? ''); ?>" name="height">
                                         </div>
                                     </div>
 
@@ -296,30 +364,33 @@ $conn->close();
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="profile-input-label">Blood Group</label>
-                                            <select class="form-control profile-input-field">
-                                                <option disabled selected>Select Blood Group</option>
-                                                <option>A+</option>
-                                                <option>A-</option>
-                                                <option>B+</option>
-                                                <option>B-</option>
-                                                <option>O+</option>
-                                                <option>O-</option>
-                                                <option>AB+</option>
-                                                <option>AB-</option>
+                                            <select class="form-control profile-input-field" name="bloodGroup">
+                                                <option disabled <?php if (empty($student['BloodGroup'])) echo 'selected'; ?>>Select Blood Group</option>
+                                                <option <?php if ($student['BloodGroup'] == 'A+') echo 'selected'; ?>>A+</option>
+                                                <option <?php if ($student['BloodGroup'] == 'A-') echo 'selected'; ?>>A-</option>
+                                                <option <?php if ($student['BloodGroup'] == 'B+') echo 'selected'; ?>>B+</option>
+                                                <option <?php if ($student['BloodGroup'] == 'B-') echo 'selected'; ?>>B-</option>
+                                                <option <?php if ($student['BloodGroup'] == 'O+') echo 'selected'; ?>>O+</option>
+                                                <option <?php if ($student['BloodGroup'] == 'O-') echo 'selected'; ?>>O-</option>
+                                                <option <?php if ($student['BloodGroup'] == 'AB+') echo 'selected'; ?>>AB+</option>
+                                                <option <?php if ($student['BloodGroup'] == 'AB-') echo 'selected'; ?>>AB-</option>
                                             </select>
+
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
                                         <label class="profile-input-label">Address</label>
-                                        <input type="text" class="form-control profile-input-field"
-                                            placeholder="Enter Address">
+                                        <input type="text" class="form-control profile-input-field" placeholder="Enter Address" name="address"
+                                            value="<?php echo htmlspecialchars($student['Address'] ?? ''); ?>">
+
                                     </div>
 
                                     <div class="mb-3">
                                         <label class="profile-input-label">Emergency Contact</label>
-                                        <input type="text" class="form-control profile-input-field"
-                                            placeholder="Emergency Contact Number">
+                                        <input type="text" class="form-control profile-input-field" placeholder="Emergency Contact Number" name="emergencyContact"
+                                            value="<?php echo htmlspecialchars($student['EmergencyContact'] ?? ''); ?>">
+
                                     </div>
 
                                     <div class="row">
@@ -340,10 +411,11 @@ $conn->close();
                                             Changes</button>
                                     </div>
 
-                                </form>
-                            </div>
 
-                        </div>
+                                </div>
+
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -387,6 +459,19 @@ $conn->close();
     </footer>
     <!--Javascript-->
     <script src="assets/js/student.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const profilePictureUpload = document.getElementById('profilePictureUpload');
+            const profilePicturePreview = document.getElementById('profilePicturePreview');
+
+            profilePictureUpload.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    profilePicturePreview.src = URL.createObjectURL(file);
+                }
+            });
+        });
+    </script>
 
 </body>
 

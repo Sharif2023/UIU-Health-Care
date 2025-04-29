@@ -11,7 +11,6 @@ if (!isset($_SESSION['studentID'])) {
 $studentID = $_SESSION['studentID'];
 $fullName = $_SESSION['fullName'];
 
-
 // Connect to your database
 $servername = "localhost";
 $username = "root";
@@ -25,17 +24,28 @@ if ($conn->connect_error) {
 }
 
 // Fetch student profile from database
-$sql = "SELECT * FROM students WHERE studentID = ?";
+$sql = "SELECT 
+            s.StudentID, s.Email, s.FullName, s.Age, s.Gender, 
+            d.Mobile, d.Height, d.BloodGroup, d.Address, d.EmergencyContact, d.ProfilePicture
+        FROM students s
+        LEFT JOIN student_details d ON s.StudentID = d.StudentID
+        WHERE s.StudentID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $studentID);
 $stmt->execute();
 $result = $stmt->get_result();
-
 $student = $result->fetch_assoc();
 
 // Close connection
 $stmt->close();
 $conn->close();
+
+$dropdownProfilePicture = $student['ProfilePicture'] ?? '';
+
+if (empty($dropdownProfilePicture)) {
+    $dropdownProfilePicture = "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -187,13 +197,13 @@ $conn->close();
             <!-- Profile Dropdown -->
             <div class="profile-container">
                 <div class="profile-btn" id="profileButton">
-                    <img src="assets/img/me.jpg" alt="User Avatar">
+                    <img src="<?php echo htmlspecialchars($dropdownProfilePicture); ?>" alt="User Avatar">
                     <span><?php echo htmlspecialchars($studentID); ?></span>
                     <i class="bi bi-caret-down-fill"></i>
                 </div>
                 <div class="dropdown-menu" id="profileDropdown">
                     <div class="dropdown-header">
-                        <img src="assets/img/me.jpg" alt="User Avatar">
+                        <img src="<?php echo htmlspecialchars($dropdownProfilePicture); ?>" alt="User Avatar">
                         <h5><?php echo htmlspecialchars($fullName); ?></h5>
                         <small>ID: <?php echo htmlspecialchars($studentID); ?></small>
                     </div>
@@ -252,8 +262,15 @@ $conn->close();
             <div class="row">
                 <!-- Left Sidebar -->
                 <div class="col-md-4 stu-pro-sidebar text-center">
-                    <img src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-                        alt="Profile Picture" class="rounded-circle stu-pro-profile-img">
+                    <?php
+                    // Set default image if no profile picture found
+                    $profilePicture = $student['ProfilePicture'] ?? '';
+
+                    if (empty($profilePicture)) {
+                        $profilePicture = "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
+                    }
+                    ?>
+                    <img src="<?php echo htmlspecialchars($profilePicture); ?>" alt="Profile Picture" class="rounded-circle stu-pro-profile-img">
                     <div class="stu-pro-name"><?php echo htmlspecialchars($student['FullName'] ?? 'Not Provided'); ?></div>
                     <div class="stu-pro-email"><?php echo htmlspecialchars($student['Email'] ?? 'Not Provided'); ?></div>
                     <div class="stu-pro-id">ID: <?php echo htmlspecialchars($student['StudentID'] ?? ''); ?></div>
@@ -274,7 +291,7 @@ $conn->close();
                     </div>
                     <div class="stu-pro-info-item">
                         <span class="stu-pro-label">Height:</span>
-                        <span class="stu-pro-value"><?php echo htmlspecialchars($student['height'] ?? ''); ?></span>
+                        <span class="stu-pro-value"><?php echo htmlspecialchars($student['Height'] ?? ''); ?></span>
                     </div>
                     <div class="stu-pro-info-item">
                         <span class="stu-pro-label">Age:</span>
@@ -286,15 +303,15 @@ $conn->close();
                     </div>
                     <div class="stu-pro-info-item">
                         <span class="stu-pro-label">Blood Group:</span>
-                        <span class="stu-pro-value"><?php echo htmlspecialchars($student['bloodGroup'] ?? ''); ?></span>
+                        <span class="stu-pro-value"><?php echo htmlspecialchars($student['BloodGroup'] ?? ''); ?></span>
                     </div>
                     <div class="stu-pro-info-item">
                         <span class="stu-pro-label">Address:</span>
-                        <span class="stu-pro-value"><?php echo htmlspecialchars($student['address'] ?? ''); ?></span>
+                        <span class="stu-pro-value"><?php echo htmlspecialchars($student['Address'] ?? ''); ?></span>
                     </div>
                     <div class="stu-pro-info-item">
                         <span class="stu-pro-label">Emergency Contact:</span>
-                        <span class="stu-pro-value"><?php echo htmlspecialchars($student['emergencyContact'] ?? 'Not Provided'); ?></span>
+                        <span class="stu-pro-value"><?php echo htmlspecialchars($student['EmergencyContact'] ?? 'Not Provided'); ?></span>
                     </div>
 
                     <div class="text-center mt-4">

@@ -11,6 +11,19 @@ CREATE TABLE students (
     PasswordHash VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE student_details (
+    StudentID VARCHAR(20),
+    Mobile VARCHAR(15),
+    Height VARCHAR(10),
+    BloodGroup VARCHAR(5),
+    Address VARCHAR(255),
+    EmergencyContact VARCHAR(20),
+    ProfilePicture VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (StudentID),
+    FOREIGN KEY (StudentID) REFERENCES students(StudentID) ON DELETE CASCADE
+);
+
+
 CREATE TABLE medical_diagnoses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     disease VARCHAR(255),

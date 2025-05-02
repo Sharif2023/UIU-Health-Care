@@ -41,13 +41,13 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="homepagestudent.html" class="active">Home</a></li>
+          <li><a href="homepagestudent.php" class="active">Home</a></li>
           <li><a href="#services">Appointments</a></li>
           <li><a href="#doctor">Doctor</a></li>
-          <li><a href="#blog-n-tips">Hospitals</a></li>
-          <li><a href="medicine-test.html">Medicine & Test</a></li>
+          <li><li><a href="nearby-hospitals.php">Hospitals</a></li></li>
+          <li><a href="stu-medicine-test.php">Medicine & Test</a></li>
           <li><a href="#blog">Blog</a></li>
-          <li><a href="about.html">About</a></li>
+          <li><a href="stu-about.php">About</a></li>
           <li onclick="openDiagnoseNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px"
               alt="Diagnosis-tool"></li>
 
@@ -57,19 +57,21 @@
       <!-- Profile Dropdown -->
       <div class="profile-container">
         <div class="profile-btn" id="profileButton">
-          <img src="assets/img/me.jpg" alt="User Avatar">
-          <span>011221078</span>
+          <img src="<?php echo htmlspecialchars($dropdownProfilePicture); ?>" alt="User Avatar">
+          <span><?php echo htmlspecialchars($studentID); ?></span>
           <i class="bi bi-caret-down-fill"></i>
         </div>
         <div class="dropdown-menu" id="profileDropdown">
           <div class="dropdown-header">
-            <img src="assets/img/me.jpg" alt="User Avatar">
+            <img src="<?php echo htmlspecialchars($dropdownProfilePicture); ?>" alt="User Avatar">
             <h5>Shariful Islam</h5>
-            <small>ID: 011221078</small>
+            <small>ID: <?php echo htmlspecialchars($studentID); ?></small>
           </div>
-          <div class="dropdown-item">
-            <i class="bi bi-person"></i> My Profile
-          </div>
+          <a href="student-profile.php">
+                        <div class="dropdown-item">
+                            <i class="bi bi-person"></i> My Profile
+                        </div>
+                    </a>
           <div class="dropdown-item">
             <i class="bi bi-bell"></i> Notification
           </div>
@@ -142,8 +144,8 @@
     </div>
 
   </footer>
-    <!--Javascript-->
-    <script src="assets/js/student.js"></script>
+  <!--Javascript-->
+  <script src="assets/js/student.js"></script>
 
 </body>
 

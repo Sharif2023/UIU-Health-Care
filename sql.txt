@@ -81,4 +81,32 @@ LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
 (medicine_name, category_name, slug, generic_name, strength, manufacturer_name, unit, unit_size, price);
 
+CREATE TABLE doctors (
+    DoctorID VARCHAR(20) PRIMARY KEY,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    FullName VARCHAR(100) NOT NULL,
+    Designation VARCHAR(100),
+    Department VARCHAR(100),
+    Gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    Mobile VARCHAR(15),
+    ProfilePicture VARCHAR(255),
+    PasswordHash VARCHAR(255) NOT NULL,
+    Bio TEXT,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
+INSERT INTO doctors (
+    DoctorID, Email, FullName, Designation, Department, Gender,
+    Mobile, ProfilePicture, PasswordHash, Bio
+) VALUES (
+    'D001',
+    'shamima@uiu.ac.bd',
+    'Dr. Shamima Akter',
+    'Senior Medical Officer',
+    'General Medicine',
+    'Female',
+    '017XXXXXXXX',
+    'assets/img/doctor.png',
+    '$2y$10$K4DcX2MN1l44i1zm5W.gTO1ckg7QLqXZ.3HL9gGpnaBC.B78Dzl8e',
+    'Experienced medical officer with over 10 years of service at UIU.'
+);

@@ -11,6 +11,39 @@ if (!isset($_SESSION['studentID'])) {
 $studentID = $_SESSION['studentID'];
 $fullName = $_SESSION['fullName'];
 
+// Connect to your database
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "uiu_healthcare";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check database connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch student profile to get ProfilePicture
+$sql = "SELECT d.ProfilePicture
+        FROM students s
+        LEFT JOIN student_details d ON s.StudentID = d.StudentID
+        WHERE s.StudentID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $studentID);
+$stmt->execute();
+$result = $stmt->get_result();
+$student = $result->fetch_assoc();
+
+$stmt->close();
+$conn->close();
+
+// Now set the profile picture
+$dropdownProfilePicture = $student['ProfilePicture'] ?? '';
+
+if (empty($dropdownProfilePicture)) {
+    $dropdownProfilePicture = "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -108,10 +141,10 @@ $fullName = $_SESSION['fullName'];
           <li><a href="homepagestudent.php" class="active">Home</a></li>
           <li><a href="#services">Appointments</a></li>
           <li><a href="#doctor">Doctor</a></li>
-          <li><a href="#blog-n-tips">Hospitals</a></li>
-          <li><a href="medicine-test.html">Medicine & Test</a></li>
+          <li><li><a href="nearby-hospitals.php">Hospitals</a></li></li>
+          <li><a href="stu-medicine-test.php">Medicine & Test</a></li>
           <li><a href="#contact">Blog</a></li>
-          <li><a href="about.php">About</a></li>
+          <li><a href="stu-about.php">About</a></li>
           <li onclick="openDiagnoseNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px"
               alt="Diagnosis-tool"></li>
 
@@ -121,13 +154,13 @@ $fullName = $_SESSION['fullName'];
       <!-- Profile Dropdown -->
       <div class="profile-container">
         <div class="profile-btn" id="profileButton">
-          <img src="assets/img/me.jpg" alt="User Avatar">
+          <img src="<?php echo htmlspecialchars($dropdownProfilePicture); ?>" alt="User Avatar">
           <span><?php echo htmlspecialchars($studentID); ?></span>
           <i class="bi bi-caret-down-fill"></i>
         </div>
         <div class="dropdown-menu" id="profileDropdown">
           <div class="dropdown-header">
-            <img src="assets/img/me.jpg" alt="User Avatar">
+            <img src="<?php echo htmlspecialchars($dropdownProfilePicture); ?>" alt="User Avatar">
             <h5><?php echo htmlspecialchars($fullName); ?></h5>
             <small>ID: <?php echo htmlspecialchars($studentID); ?></small>
           </div>
@@ -159,7 +192,7 @@ $fullName = $_SESSION['fullName'];
   </header>
 
   <main class="main">
-    <h1>Welcome, User! 💖</h1>
+    <h1 style="background-color: #F4F7FA;">Welcome, User! 💖</h1>
     <div class="container-quote">
       <div id="hero-gif">
         <img src="assets/img/hero-student-home.gif" alt="hero-student-gif">

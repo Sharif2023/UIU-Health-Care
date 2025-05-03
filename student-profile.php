@@ -184,10 +184,10 @@ if (empty($dropdownProfilePicture)) {
                     <li><a href="homepagestudent.php">Home</a></li>
                     <li><a href="#services">Appointments</a></li>
                     <li><a href="#doctor">Doctor</a></li>
-                    <li><a href="#blog-n-tips">Hospitals</a></li>
-                    <li><a href="medicine-test.html">Medicine & Test</a></li>
+                    <li><li><a href="nearby-hospitals.php">Hospitals</a></li></li>
+                    <li><a href="stu-medicine-test.php">Medicine & Test</a></li>
                     <li><a href="#blog">Blog</a></li>
-                    <li><a href="about.php">About</a></li>
+                    <li><a href="stu-about.php">About</a></li>
                     <li onclick="openDiagnoseNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px"
                             alt="Diagnosis-tool"></li>
 
@@ -317,7 +317,7 @@ if (empty($dropdownProfilePicture)) {
                     </div>
 
                     <div class="text-center mt-4">
-                        <a href="edit-profile.php" class="btn btn-success stu-pro-edit-btn">
+                        <a href="stu-edit-profile.php" class="btn btn-success stu-pro-edit-btn">
                             <i class="bi bi-pencil-square"></i> Edit Profile
                         </a>
                     </div>

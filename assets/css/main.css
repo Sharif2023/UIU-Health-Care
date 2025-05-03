@@ -1420,3 +1420,122 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+
+/* Medicine Test */
+
+
+.med-test-container {
+  padding: 30px;
+  background-color: #f4f7fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.med-test-tabs {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  /* Adjusted to separate tabs from content */
+}
+
+.med-test-tabs button {
+  padding: 12px 25px;
+  border: 2px solid #4caf4f;
+  background-color: #fff;
+  color: #4caf4f;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+.med-test-tabs button.active {
+  background-color: #4caf4f;
+  color: #fff;
+}
+
+.med-test-tabs button:hover {
+  background-color: #008000;
+  color: #fff;
+}
+
+.med-test-search input {
+  width: 300px;
+  /* Fixed width to avoid stretching */
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  margin-left: 20px;
+  /* Added margin to separate from tabs */
+  transition: border-color 0.3s;
+}
+
+.med-test-search input:focus {
+  border-color: #4caf4f;
+  outline: none;
+}
+
+.med-test-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 15px 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s;
+}
+
+.med-test-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.med-test-card h4 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.med-test-card p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.med-test-card .price {
+  font-weight: bold;
+  color: #4caf4f;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.pagination button {
+  padding: 10px 15px;
+  border: none;
+  color: #4caf4f;
+  background-color: white;
+  border: 1px solid #4caf4f;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.pagination button:hover {
+  background-color: #008000;
+  color: white;
+}
+
+.pagination button.disabled {
+  color: white;
+  background-color: #4caf4f;
+  cursor: not-allowed;
+}

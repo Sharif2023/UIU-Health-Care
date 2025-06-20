@@ -80,7 +80,9 @@ if (empty($dropdownProfilePicture)) {
         <ul>
           <li><a href="homepagestudent.php">Home</a></li>
           <li><a href="#doctor">Doctor</a></li>
-          <li><li><a href="nearby-hospitals.php">Hospitals</a></li></li>
+          <li>
+          <li><a href="nearby-hospitals.php">Hospitals</a></li>
+          </li>
           <li><a href="stu-medicine-test.php" class="active">Medicine & Test</a></li>
           <li><a href="#contact">Blog</a></li>
           <li><a href="stu-about.php">About</a></li>
@@ -120,9 +122,11 @@ if (empty($dropdownProfilePicture)) {
           <div class="dropdown-item">
             <i class="bi bi-exclamation-triangle"></i> Report a problem
           </div>
-          <div class="logout-btn">
-            <i class="bi bi-box-arrow-right"></i> Log out
-          </div>
+          <a href="login-signup.html">
+            <div class="logout-btn">
+              <i class="bi bi-box-arrow-right"></i> Log out
+            </div>
+          </a>
         </div>
       </div>
 

@@ -157,7 +157,7 @@ $doctorName = $_SESSION['doctorName'];
             <h5>Dr. Shamima Akter</h5>
             <small>Senior Medical Officer, UIU Medical Centre</small>
           </div>
-          <a href="student-profile.php">
+          <a href="doctor-profile.php">
             <div class="dropdown-item">
               <i class="bi bi-person"></i> My Profile
             </div>

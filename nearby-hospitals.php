@@ -119,7 +119,7 @@ if (empty($dropdownProfilePicture)) {
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="homepagestudent.php">Home</a></li>
-                    <li><a href="#doctor">Doctor</a></li>
+                    <li><a href="stu-doctor.php">Doctor</a></li>
                     <li><a href="nearby-hospitals.php" class="active">Hospitals</a></li>
                     <li><a href="stu-medicine-test.php">Medicine & Test</a></li>
                     <li><a href="#blog">Blog</a></li>
@@ -263,7 +263,7 @@ if (empty($dropdownProfilePicture)) {
         }
 
         function fetchNearbyHospitals(userLat, userLon) {
-            const apiKey = 'AlzaSybfqvcN-gj3d_AVq1AmXf7U9q6aSRiw5yP';  // Replace with your GoMaps API Key
+            const apiKey = 'AlzaSyVw_neBr6ZqyTpBf6YKJAVSmMOgq-2TsaM';  // Replace with your GoMaps API Key
             const radius = 5000; // Search within 5 km
             const url = `https://maps.gomaps.pro/maps/api/place/nearbysearch/json?location=${userLat},${userLon}&radius=${radius}&type=hospital&key=${apiKey}`;
 

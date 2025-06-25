@@ -38,7 +38,6 @@ if (empty($dropdownProfilePicture)) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 

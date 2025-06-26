@@ -138,7 +138,7 @@ $doctorName = $_SESSION['doctorName'];
           <li><a href="#services">Appointments</a></li>
           <li><a href="patient">Patients</a></li>
           <li><a href="doc-medicine-test.php">Medicine & Test</a></li>
-          <li><a href="#blog">Blog</a></li>
+          <li><a href="doc-blogs.php">Blogs</a></li>
           <li><a href="#forum">Forum</a></li>
           <li><a href="stu-about.php">About</a></li>
         </ul>

@@ -205,7 +205,7 @@ $stmt->close();
                     <li><a href="#services">Appointments</a></li>
                     <li><a href="patient">Patients</a></li>
                     <li><a href="doc-medicine-test.php">Medicine & Test</a></li>
-                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="doc-blogs.php">Blogs</a></li>
                     <li><a href="#forum">Forum</a></li>
                     <li><a href="doc-about.php">About</a></li>
                 </ul>
@@ -244,9 +244,11 @@ $stmt->close();
                     <div class="dropdown-item">
                         <i class="bi bi-exclamation-triangle"></i> Report a problem
                     </div>
-                    <div class="logout-btn">
-                        <i class="bi bi-box-arrow-right"></i> Log out
-                    </div>
+                    <a href="login-signup.html">
+                        <div class="logout-btn">
+                            <i class="bi bi-box-arrow-right"></i> Log out
+                        </div>
+                    </a>
                 </div>
             </div>
 

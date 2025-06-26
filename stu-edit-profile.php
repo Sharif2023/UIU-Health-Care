@@ -237,7 +237,7 @@ if (empty($dropdownProfilePicture)) {
                     <li><a href="stu-doctor.php">Doctor</a></li>
                     <li><li><a href="nearby-hospitals.php">Hospitals</a></li></li>
                     <li><a href="stu-medicine-test.php">Medicine & Test</a></li>
-                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="stu-blogs.php">Blogs</a></li>
                     <li><a href="stu-about.php">About</a></li>
                     <li onclick="openDiagnoseNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px"
                             alt="Diagnosis-tool"></li>

@@ -110,3 +110,22 @@ INSERT INTO doctors (
     '$2y$10$K4DcX2MN1l44i1zm5W.gTO1ckg7QLqXZ.3HL9gGpnaBC.B78Dzl8e',
     'Experienced medical officer with over 10 years of service at UIU.'
 );
+
+CREATE TABLE blogs (
+    BlogID INT AUTO_INCREMENT PRIMARY KEY,
+    DoctorID VARCHAR(20),
+    Title VARCHAR(255) NOT NULL,
+    Content TEXT NOT NULL,
+    Image VARCHAR(255),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (DoctorID) REFERENCES doctors(DoctorID) ON DELETE CASCADE
+);
+
+CREATE TABLE blog_reactions (
+    ReactionID INT AUTO_INCREMENT PRIMARY KEY,
+    BlogID INT,
+    StudentID VARCHAR(20),
+    ReactionType ENUM('heart') DEFAULT 'heart', -- We assume only heart reaction for now
+    FOREIGN KEY (BlogID) REFERENCES blogs(BlogID) ON DELETE CASCADE,
+    FOREIGN KEY (StudentID) REFERENCES students(StudentID) ON DELETE CASCADE
+);

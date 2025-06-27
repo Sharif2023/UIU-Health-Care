@@ -91,7 +91,7 @@ if (empty($dropdownProfilePicture)) {
           <li><a href="#services">Appointments</a></li>
           <li><a href="#doctor">Patients</a></li>
           <li><a href="doc-medicine-test.php" class="active">Medicine & Test</a></li>
-          <li><a href="#contact">Blog</a></li>
+          <li><a href="doc-blogs.php">Blogs</a></li>
           <li><a href="#contact">Forum</a></li>
           <li><a href="doc-about.php">About</a></li>
         </ul>

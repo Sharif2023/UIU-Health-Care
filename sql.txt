@@ -144,15 +144,19 @@ CREATE TABLE appointments (
     FOREIGN KEY (DoctorID) REFERENCES doctors(DoctorID) ON DELETE CASCADE
 );
 
--- Table for storing prescriptions issued by the doctor
 CREATE TABLE prescriptions (
     PrescriptionID INT AUTO_INCREMENT PRIMARY KEY,
     AppointmentID INT,
     DoctorID VARCHAR(20),
-    PrescriptionDetails TEXT,
-    TestRecommendations TEXT,
+    Symptoms TEXT,
+    Tests TEXT,
+    Advice TEXT,
+    Medicines TEXT,
+    MedicineSchedule TEXT,
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (AppointmentID) REFERENCES appointments(AppointmentID) ON DELETE CASCADE,
     FOREIGN KEY (DoctorID) REFERENCES doctors(DoctorID) ON DELETE CASCADE
 );
+
+
 

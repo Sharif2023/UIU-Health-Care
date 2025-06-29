@@ -129,3 +129,30 @@ CREATE TABLE blog_reactions (
     FOREIGN KEY (BlogID) REFERENCES blogs(BlogID) ON DELETE CASCADE,
     FOREIGN KEY (StudentID) REFERENCES students(StudentID) ON DELETE CASCADE
 );
+
+-- Table for storing appointments
+CREATE TABLE appointments (
+    AppointmentID INT AUTO_INCREMENT PRIMARY KEY,
+    StudentID VARCHAR(20),
+    DoctorID VARCHAR(20),
+    AppointmentDate DATE,
+    Symptoms TEXT,
+    Status ENUM('Pending', 'Confirmed', 'Completed') DEFAULT 'Pending',
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    SymptomImage VARCHAR(255) DEFAULT NULL,
+    FOREIGN KEY (StudentID) REFERENCES students(StudentID) ON DELETE CASCADE,
+    FOREIGN KEY (DoctorID) REFERENCES doctors(DoctorID) ON DELETE CASCADE
+);
+
+-- Table for storing prescriptions issued by the doctor
+CREATE TABLE prescriptions (
+    PrescriptionID INT AUTO_INCREMENT PRIMARY KEY,
+    AppointmentID INT,
+    DoctorID VARCHAR(20),
+    PrescriptionDetails TEXT,
+    TestRecommendations TEXT,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (AppointmentID) REFERENCES appointments(AppointmentID) ON DELETE CASCADE,
+    FOREIGN KEY (DoctorID) REFERENCES doctors(DoctorID) ON DELETE CASCADE
+);
+

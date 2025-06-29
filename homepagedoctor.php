@@ -135,7 +135,7 @@ $doctorName = $_SESSION['doctorName'];
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="#hero" class="active">Home</a></li>
-          <li><a href="#services">Appointments</a></li>
+          <li><a href="doc-appointments.php">Appointments</a></li>
           <li><a href="patient">Patients</a></li>
           <li><a href="doc-medicine-test.php">Medicine & Test</a></li>
           <li><a href="doc-blogs.php">Blogs</a></li>

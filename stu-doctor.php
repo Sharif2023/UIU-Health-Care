@@ -320,7 +320,7 @@ $doctorProfilePicture = $doctor['ProfilePicture'] ?? 'https://st3.depositphotos.
                     <!-- Add Action Buttons -->
                     <div class="text-center mt-4">
                         <!-- Buttons for the student to interact with the doctor -->
-                        <a href="book-appointment.php" class="btn btn-primary doc-pro-btn">
+                        <a href="stu-book-appointments.php" class="btn btn-primary doc-pro-btn">
                             <i class="bi bi-calendar-check"></i> Book Appointment
                         </a>
                         <a href="message-doctor.php" class="btn btn-secondary doc-pro-btn">

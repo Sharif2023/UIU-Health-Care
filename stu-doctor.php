@@ -332,8 +332,8 @@ $doctorProfilePicture = $doctor['ProfilePicture'] ?? 'https://st3.depositphotos.
                         <a href="share-medical-issue.php" class="btn btn-warning doc-pro-btn">
                             <i class="bi bi-file-earmark-medical"></i> Share Medical Issue/Reports
                         </a>
-                        <a href="prescription-history.php" class="btn btn-success doc-pro-btn">
-                            <i class="bi bi-file-earmark-medical"></i> Prescription History
+                        <a href="stu-prescription.php" class="btn btn-success doc-pro-btn">
+                            <i class="bi bi-file-earmark-medical"></i> Prescription
                         </a>
                     </div>
                 </div>

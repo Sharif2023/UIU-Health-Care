@@ -102,7 +102,7 @@ if (empty($dropdownProfilePicture)) {
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="homepagedoctor.php">Home</a></li>
-                    <li><a href="doc-appointments.php">Appointments</a></li>
+                    <li><a href="doc-appointments.php" class="active">Appointments</a></li>
                     <li><a href="patient">Patients</a></li>
                     <li><a href="doc-medicine-test.php">Medicine & Test</a></li>
                     <li><a href="doc-blogs.php">Blogs</a></li>

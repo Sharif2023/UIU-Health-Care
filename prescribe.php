@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $sql = "INSERT INTO prescriptions (AppointmentID, DoctorID, Symptoms, Tests, Advice, Medicines, MedicineSchedule) 
         VALUES (?, ?, ?, ?, ?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sssssss", $appointmentID, $doctorID, $symptoms, $tests, $advice, $medicines, $medicineSchedules);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssssss", $appointmentID, $doctorID, $symptoms, $tests, $advice, $medicines, $medicineSchedules);
 
     if ($stmt->execute()) {
         $message = "Prescription submitted successfully!";
@@ -348,6 +348,30 @@ $stmt->bind_param("sssssss", $appointmentID, $doctorID, $symptoms, $tests, $advi
         </div>
     </main>
     <!-- Template for new medicine -->
+    <footer id="footer" class="footer light-background">
+
+        <div class="container">
+            <div class="copyright text-center ">
+                <p>© <span>Copyright</span> <strong class="px-1 sitename">UIU HealthCare</strong> <span>All Rights
+                        Reserved</span></p>
+            </div>
+            <div class="social-links d-flex justify-content-center">
+                <a href=""><i class="bi bi-twitter-x"></i></a>
+                <a href=""><i class="bi bi-facebook"></i></a>
+                <a href=""><i class="bi bi-instagram"></i></a>
+                <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+            <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you've purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+                Designed by <a href="https://github.com/Sharif2023">Shariful Islam</a>
+            </div>
+        </div>
+
+    </footer>
+    <script src="assets/js/student.js"></script>
     <script id="new_medicine" type="text/template">
         <div class="med">
             <input class="form-control" placeholder="Enter medicine name" name="medicines[]" required />

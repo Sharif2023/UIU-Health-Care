@@ -82,7 +82,7 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Homepage - UIU HealthCare</title>
+    <title>Doctor Profile Edit - UIU HealthCare</title>
 
     <!-- Favicons -->
     <link href="assets/img/title.png" rel="icon">
@@ -202,7 +202,7 @@ $stmt->close();
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="#hero">Home</a></li>
-                    <li><a href="#services">Appointments</a></li>
+                    <li><a href="doc-appointments.php">Appointments</a></li>
                     <li><a href="patient">Patients</a></li>
                     <li><a href="doc-medicine-test.php">Medicine & Test</a></li>
                     <li><a href="doc-blogs.php">Blogs</a></li>

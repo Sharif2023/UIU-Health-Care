@@ -54,7 +54,7 @@ if (empty($dropdownProfilePicture)) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Doctor Homepage - UIU HealthCare</title>
+  <title>Doctor Medicine-Test - UIU HealthCare</title>
 
   <!-- Favicons -->
   <link href="assets/img/title.png" rel="icon">
@@ -88,7 +88,7 @@ if (empty($dropdownProfilePicture)) {
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="homepagedoctor.php">Home</a></li>
-          <li><a href="#services">Appointments</a></li>
+          <li><a href="doc-appointments.php">Appointments</a></li>
           <li><a href="#doctor">Patients</a></li>
           <li><a href="doc-medicine-test.php" class="active">Medicine & Test</a></li>
           <li><a href="doc-blogs.php">Blogs</a></li>

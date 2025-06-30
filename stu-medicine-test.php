@@ -44,7 +44,7 @@ if (empty($dropdownProfilePicture)) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Students Homepage - UIU HealthCare</title>
+  <title>Students Medicine Test - UIU HealthCare</title>
 
   <!-- Favicons -->
   <link href="assets/img/title.png" rel="icon">

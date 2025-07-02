@@ -140,7 +140,7 @@ $doctorName = $_SESSION['doctorName'];
           <li><a href="doc-medicine-test.php">Medicine & Test</a></li>
           <li><a href="doc-blogs.php">Blogs</a></li>
           <li><a href="#forum">Forum</a></li>
-          <li><a href="stu-about.php">About</a></li>
+          <li><a href="doc-about.php">About</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

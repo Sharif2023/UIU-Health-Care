@@ -106,10 +106,6 @@ if (empty($dropdownProfilePicture)) {
     <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
-
-    <style>
-        /*CSS Code have to Starts from Here and id/class name should be unique according to page name */
-    </style>
 </head>
 
 <body>
@@ -200,7 +196,7 @@ if (empty($dropdownProfilePicture)) {
             <div class="solution" id="solutionText"></div>
         </div>
 
-        <section id="appointments" class="container mt-5">
+        <section id="appointments" class="container py-5" style="background-color: #FAEBD7; border-radius: 10px;">
             <h2 class="text-center mb-4">Book an Appointment</h2>
 
             <?php if (!empty($successMessage)): ?>

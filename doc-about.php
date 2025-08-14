@@ -10,7 +10,6 @@ $doctorID = $_SESSION['doctorID'];
 $doctorName = $_SESSION['doctorName'];
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 

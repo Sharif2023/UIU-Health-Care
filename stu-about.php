@@ -225,7 +225,9 @@ if (empty($dropdownProfilePicture)) {
         <ul>
           <li><a href="homepagestudent.php">Home</a></li>
           <li><a href="stu-doctor.php">Doctor</a></li>
-          <li><li><a href="nearby-hospitals.php">Hospitals</a></li></li>
+          <li>
+          <li><a href="nearby-hospitals.php">Hospitals</a></li>
+          </li>
           <li><a href="stu-medicine-test.php">Medicine & Test</a></li>
           <li><a href="stu-blogs.php">Blogs</a></li>
           <li><a href="stu-about.php" class="active">About</a></li>

@@ -35,10 +35,7 @@ $stmt->bind_param("s", $doctorID);
 $stmt->execute();
 $result = $stmt->get_result();
 $doctor = $result->fetch_assoc();
-
-// Close connection
 $stmt->close();
-$conn->close();
 
 $dropdownProfilePicture = $doctor['ProfilePicture'] ?? '';
 
@@ -76,7 +73,7 @@ if (empty($dropdownProfilePicture)) {
     <link href="assets/css/main.css" rel="stylesheet">
 
     <style>
-        .btn{
+        .btn {
             background-color: green;
             color: white;
             border: none;
@@ -84,7 +81,8 @@ if (empty($dropdownProfilePicture)) {
             border-radius: 5px;
             cursor: pointer;
         }
-        .btn:hover{
+
+        .btn:hover {
             background-color: #4caf4f;
         }
     </style>
@@ -174,7 +172,13 @@ if (empty($dropdownProfilePicture)) {
                     $sql = "SELECT a.AppointmentID, s.FullName, s.StudentID, a.AppointmentDate, a.Symptoms, a.SymptomImage
         FROM appointments a
         JOIN students s ON a.StudentID = s.StudentID
-        WHERE a.DoctorID = ?";
+        WHERE a.DoctorID = ?
+          AND NOT EXISTS (
+              SELECT 1 FROM prescriptions p
+              WHERE p.AppointmentID = a.AppointmentID
+          )
+        ORDER BY a.AppointmentDate DESC";
+
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("s", $doctorID);
                     $stmt->execute();
@@ -191,6 +195,8 @@ if (empty($dropdownProfilePicture)) {
                             <td><a href='prescribe.php?appointmentID=" . $row['AppointmentID'] . "' class='btn btn-primary'>Prescribe</a></td>
                         </tr>";
                     }
+                    $stmt->close();
+                    $conn->close();
                     ?>
                 </tbody>
             </table>

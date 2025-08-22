@@ -21,15 +21,38 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+$studentName = '';
+$dropdownProfilePicture = 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg';
+
+$ps = $conn->prepare("
+    SELECT s.FullName, COALESCE(sd.ProfilePicture, '') AS ProfilePicture
+    FROM students s
+    LEFT JOIN student_details sd ON sd.StudentID = s.StudentID
+    WHERE s.StudentID = ?
+");
+$ps->bind_param("s", $studentID);
+$ps->execute();
+$pr = $ps->get_result();
+if ($row = $pr->fetch_assoc()) {
+    $studentName = $row['FullName'] ?: $studentID;
+    if (!empty($row['ProfilePicture'])) {
+        $dropdownProfilePicture = $row['ProfilePicture'];
+    }
+}
+$ps->close();
+
 // Initialize message variable
 $message = "No prescriptions found for you."; // Default message
 
 // Fetch prescription details
-$sql = "SELECT p.PrescriptionID, p.Symptoms, p.Tests, p.Advice, p.Medicines, p.MedicineSchedule, p.CreatedAt, d.FullName as doctorName
+$sql = "SELECT p.PrescriptionID, p.Symptoms, p.Tests, p.Advice, p.Medicines, p.MedicineSchedule, 
+               p.CreatedAt, d.FullName AS doctorName
         FROM prescriptions p
         JOIN appointments a ON p.AppointmentID = a.AppointmentID
         JOIN doctors d ON p.DoctorID = d.DoctorID
-        WHERE a.StudentID = ?";
+        WHERE a.StudentID = ?
+        ORDER BY p.CreatedAt DESC
+        LIMIT 1";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $studentID);
 $stmt->execute();
@@ -64,51 +87,97 @@ $stmt->close();
 
 // Check if the request is for AJAX
 if (isset($_GET['PrescriptionID'])) {
-    $prescriptionID = $_GET['PrescriptionID'];
+    // Return JSON and prevent any stray output
+    header('Content-Type: application/json; charset=utf-8');
+    ini_set('display_errors', '0');                 // don't print notices in response
+    while (ob_get_level()) {
+        ob_end_clean();
+    }      // clear any previous output buffers
 
-    // Fetch prescription details for AJAX request
-    $sql = "SELECT p.PrescriptionID, p.Symptoms, p.Tests, p.Advice, p.Medicines, p.MedicineSchedule, p.CreatedAt, d.FullName as doctorName
+    $prescriptionID = (int)$_GET['PrescriptionID'];
+
+    $sql = "SELECT p.PrescriptionID, p.Symptoms, p.Tests, p.Advice, p.Medicines, p.MedicineSchedule,
+                   p.CreatedAt, d.FullName AS doctorName
             FROM prescriptions p
             JOIN doctors d ON p.DoctorID = d.DoctorID
             WHERE p.PrescriptionID = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $prescriptionID);
+    if (!$stmt) {
+        echo json_encode(['error' => 'Prepare failed']);
+        exit();
+    }
+    $stmt->bind_param("i", $prescriptionID);
     $stmt->execute();
     $result = $stmt->get_result();
     $prescription = $result->fetch_assoc();
 
-    // Check if prescription exists
-    if ($prescription) {
-        // Decode the medicines and schedules
-        $medicines = json_decode($prescription['Medicines'], true);
-        $medicineSchedules = json_decode($prescription['MedicineSchedule'], true);
+    if (!$prescription) {
+        echo json_encode([]);
+        exit();
+    }
 
-        // Create a formatted list of medicines with schedules
-        $medicinesText = '';
-        if (is_array($medicines) && is_array($medicineSchedules)) {
-            foreach ($medicines as $index => $medicine) {
-                $medicinesText .= '<p>' . $medicine . ' (' . $medicineSchedules[$index] . ')</p>';
+    $meds = json_decode($prescription['Medicines'] ?? '[]', true);
+    $sch  = json_decode($prescription['MedicineSchedule'] ?? '[]', true);
+
+    $medicinesText = '';
+    if (is_array($meds) && is_array($sch)) {
+        $max = max(count($meds), count($sch));
+        for ($i = 0; $i < $max; $i++) {
+            $m = $meds[$i] ?? '';
+            $s = $sch[$i]  ?? '';
+            if ($m !== '' || $s !== '') {
+                $medicinesText .= '<p>' . htmlspecialchars($m) . ' (' . htmlspecialchars($s) . ')</p>';
             }
         }
+    }
 
-        // Send prescription data as JSON
-        echo json_encode([
-            'doctorName' => $prescription['doctorName'],
-            'Symptoms' => $prescription['Symptoms'],
-            'Tests' => $prescription['Tests'],
-            'Advice' => $prescription['Advice'],
-            'MedicineSchedule' => $medicinesText,  // Send the medicine schedules here
-            'CreatedAt' => $prescription['CreatedAt']
-        ]);
-    } else {
-        echo json_encode([]);  // Empty array if no prescription found
+    echo json_encode([
+        'doctorName'       => $prescription['doctorName'] ?? '',
+        'Symptoms'         => $prescription['Symptoms'] ?? '',
+        'Tests'            => $prescription['Tests'] ?? '',
+        'Advice'           => $prescription['Advice'] ?? '',
+        'MedicineSchedule' => $medicinesText,
+        'CreatedAt'        => $prescription['CreatedAt'] ?? ''
+    ]);
+    exit();
+}
+
+// AJAX: fetch previous prescriptions list (HTML snippet only, excludes latest)
+if (isset($_GET['list']) && $_GET['list'] === 'previous') {
+    header('Content-Type: text/html; charset=utf-8');
+
+    $sql = "SELECT p.PrescriptionID, p.Symptoms, p.Tests, p.Advice, p.CreatedAt, d.FullName AS doctorName
+            FROM prescriptions p
+            JOIN appointments a ON p.AppointmentID = a.AppointmentID
+            JOIN doctors d ON p.DoctorID = d.DoctorID
+            WHERE a.StudentID = ?
+            ORDER BY p.CreatedAt DESC
+            LIMIT 18446744073709551615 OFFSET 1"; // skip latest
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $studentID);
+    $stmt->execute();
+    $res = $stmt->get_result();
+
+    if ($res->num_rows === 0) {
+        echo "<p>No previous prescriptions.</p>";
+        exit();
+    }
+
+    while ($row = $res->fetch_assoc()) {
+        echo '<div class="prescription-item">';
+        echo '<h4>Prescription ID: ' . htmlspecialchars($row['PrescriptionID']) . '</h4>';
+        echo '<p><strong>Doctor: </strong>' . htmlspecialchars($row['doctorName']) . '</p>';
+        echo '<p><strong>Symptoms: </strong>' . htmlspecialchars($row['Symptoms']) . '</p>';
+        echo '<p><strong>Tests: </strong>' . htmlspecialchars($row['Tests']) . '</p>';
+        echo '<p><strong>Advice: </strong>' . htmlspecialchars($row['Advice']) . '</p>';
+        echo '<p><strong>Prescription Date: </strong>' . htmlspecialchars($row['CreatedAt']) . '</p>';
+        echo '<button class="view-details-btn" data-id="' . (int)$row['PrescriptionID'] . '">View Details</button>';
+        echo '</div>';
     }
     exit();
 }
 
 $conn->close();
-$dropdownProfilePicture = $student['ProfilePicture'] ?? 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg';
-$doctorProfilePicture = $doctor['ProfilePicture'] ?? 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg';
 ?>
 
 <!DOCTYPE html>
@@ -274,41 +343,26 @@ $doctorProfilePicture = $doctor['ProfilePicture'] ?? 'https://st3.depositphotos.
             <div class="profile-container">
                 <div class="profile-btn" id="profileButton">
                     <img src="<?php echo htmlspecialchars($dropdownProfilePicture); ?>" alt="User Avatar">
-                    <span><?php echo htmlspecialchars($studentID); ?></span>
+                    <span><?php echo htmlspecialchars($studentName ?: $studentID); ?></span>
                     <i class="bi bi-caret-down-fill"></i>
                 </div>
                 <div class="dropdown-menu" id="profileDropdown">
                     <div class="dropdown-header">
                         <img src="<?php echo htmlspecialchars($dropdownProfilePicture); ?>" alt="User Avatar">
-                        <h5>Shariful Islam</h5>
+                        <h5><?php echo htmlspecialchars($studentName ?: $studentID); ?></h5>
                         <small>ID: <?php echo htmlspecialchars($studentID); ?></small>
                     </div>
                     <a href="student-profile.php">
-                        <div class="dropdown-item">
-                            <i class="bi bi-person"></i> My Profile
-                        </div>
+                        <div class="dropdown-item"><i class="bi bi-person"></i> My Profile</div>
                     </a>
-                    <div class="dropdown-item">
-                        <i class="bi bi-bell"></i> Notification
-                    </div>
-                    <div class="dropdown-item">
-                        <i class="bi bi-question-circle"></i> Help Center
-                    </div>
-                    <div class="dropdown-item">
-                        <i class="bi bi-gear"></i> Settings and Privacy
-                    </div>
-                    <div class="dropdown-item">
-                        <i class="bi bi-exclamation-triangle"></i> Report a problem
-                    </div>
+                    <div class="dropdown-item"><i class="bi bi-bell"></i> Notification</div>
+                    <div class="dropdown-item"><i class="bi bi-question-circle"></i> Help Center</div>
+                    <div class="dropdown-item"><i class="bi bi-gear"></i> Settings and Privacy</div>
                     <a href="login-signup.html">
-                        <div class="logout-btn">
-                            <i class="bi bi-box-arrow-right"></i> Log out
-                        </div>
+                        <div class="logout-btn"><i class="bi bi-box-arrow-right"></i> Log out</div>
                     </a>
                 </div>
             </div>
-
-        </div>
     </header>
     <main class="main">
         <!--Code of DiagnoseBot-->
@@ -354,6 +408,11 @@ $doctorProfilePicture = $doctor['ProfilePicture'] ?? 'https://st3.depositphotos.
             <?php endif; ?>
         </div>
 
+        <button class="view-previous-prescriptions-btn" onclick="togglePreviousPrescriptions()">View Previous Prescriptions</button>
+
+        <div class="previous-prescriptions" style="display:none;">
+            <!-- List of previous prescriptions -->
+        </div>
         <!-- Modal Structure -->
         <div class="modal" id="prescriptionModal">
             <div class="modal-content">
@@ -403,47 +462,70 @@ $doctorProfilePicture = $doctor['ProfilePicture'] ?? 'https://st3.depositphotos.
 
     <script>
         $(document).ready(function() {
-            // Show modal with details when "View Details" button is clicked
-            $(".view-details-btn").click(function() {
+            // Delegate so dynamically added buttons work too
+            $(document).on("click", ".view-details-btn", function() {
                 var prescriptionID = $(this).data("id");
-
-                // Fetch prescription details using AJAX
                 $.ajax({
-                    url: "stu-prescription.php", // Call the same page to fetch details
+                    url: "stu-prescription.php",
                     type: "GET",
+                    dataType: "json", // <— ADD THIS
                     data: {
                         PrescriptionID: prescriptionID
                     },
-                    success: function(data) {
-                        if (data) {
-                            // Parse the data received
-                            var prescription = JSON.parse(data);
-
-                            // Populate modal with fetched data
-                            $("#doctorName").text(prescription.doctorName);
-                            $("#symptoms").text(prescription.Symptoms);
-                            $("#tests").text(prescription.Tests);
-                            $("#advice").text(prescription.Advice);
-                            $("#medicineSchedule").html(prescription.MedicineSchedule);
-                            $("#prescriptionDate").text(prescription.CreatedAt);
-
-                            // Show the modal
-                            $("#prescriptionModal").fadeIn();
-                        } else {
+                    success: function(p) { // <— p is already a parsed object
+                        if (!p || p.error) {
                             alert("No data found for this prescription.");
+                            return;
                         }
+                        $("#doctorName").text(p.doctorName || "");
+                        $("#symptoms").text(p.Symptoms || "");
+                        $("#tests").text(p.Tests || "");
+                        $("#advice").text(p.Advice || "");
+                        $("#medicineSchedule").html(p.MedicineSchedule || "");
+                        $("#prescriptionDate").text(p.CreatedAt || "");
+                        $("#prescriptionModal").fadeIn();
                     },
-                    error: function() {
+                    error: function(xhr) {
+                        console.error("Server replied:", xhr.responseText);
                         alert("Error fetching prescription details.");
                     }
                 });
             });
 
-            // Close modal when close button is clicked
-            $("#closeModal").click(function() {
+            // Close modal
+            $("#closeModal").on("click", function() {
                 $("#prescriptionModal").fadeOut();
             });
         });
+
+        function togglePreviousPrescriptions() {
+            var prevDiv = document.querySelector('.previous-prescriptions');
+            var btn = document.querySelector('.view-previous-prescriptions-btn'); // the button
+            var visible = prevDiv.style.display === 'block';
+
+            if (!visible) {
+                $.ajax({
+                    url: "stu-prescription.php",
+                    type: "GET",
+                    data: {
+                        list: "previous"
+                    },
+                    success: function(html) {
+                        prevDiv.innerHTML = html;
+                        prevDiv.style.display = 'block';
+                        btn.textContent = "Hide Previous Prescriptions"; // 🔄 change label
+                    },
+                    error: function() {
+                        prevDiv.innerHTML = "<p>Failed to load previous prescriptions.</p>";
+                        prevDiv.style.display = 'block';
+                        btn.textContent = "Hide Previous Prescriptions"; // still update
+                    }
+                });
+            } else {
+                prevDiv.style.display = 'none';
+                btn.textContent = "View Previous Prescriptions"; // 🔄 back to default
+            }
+        }
     </script>
 </body>
 

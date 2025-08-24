@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $advice = $_POST['advice'];
     $medicines = isset($_POST['medicines']) ? json_encode($_POST['medicines']) : json_encode([]);
     $medicineSchedules = isset($_POST['medicines_schedule']) ? json_encode($_POST['medicines_schedule']) : json_encode([]);
+    $medicineDurations = isset($_POST['medicines_duration']) ? json_encode($_POST['medicines_duration']) : json_encode([]);
 
     // Database connection
     $servername = "localhost";
@@ -29,10 +30,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "INSERT INTO prescriptions (AppointmentID, DoctorID, Symptoms, Tests, Advice, Medicines, MedicineSchedule) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO prescriptions (AppointmentID, DoctorID, Symptoms, Tests, Advice, Medicines, MedicineSchedule, MedicineDuration) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssss", $appointmentID, $doctorID, $symptoms, $tests, $advice, $medicines, $medicineSchedules);
+    $stmt->bind_param(
+        "ssssssss",
+        $appointmentID,
+        $doctorID,
+        $symptoms,
+        $tests,
+        $advice,
+        $medicines,
+        $medicineSchedules,
+        $medicineDurations
+    );
 
     if ($stmt->execute()) {
         $message = "Prescription submitted successfully!";
@@ -372,27 +383,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     </footer>
     <script src="assets/js/student.js"></script>
+
     <script id="new_medicine" type="text/template">
-        <div class="med">
-            <input class="form-control" placeholder="Enter medicine name" name="medicines[]" required />
-            <select class="form-control" name="medicines_schedule[]" required>
-                <option value="1+1+1">1+1+1</option>
-                <option value="1+0+1">1+0+1</option>
-                <option value="1+1+0">1+1+0</option>
-                <option value="0+1+1">0+1+1</option>
-            </select>
+        <div class="med" style="border:1px solid #eee;padding:10px;border-radius:6px;margin-bottom:10px;position:relative;">
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <input class="form-control" placeholder="Enter medicine name" name="medicines[]" required style="flex:1 1 220px;" />
+
+        <select class="form-control" name="medicines_schedule[]" required style="width:140px;">
+            <option value="1+1+1">1+1+1</option>
+            <option value="1+0+1">1+0+1</option>
+            <option value="1+1+0">1+1+0</option>
+            <option value="0+1+1">0+1+1</option>
+            <option value="0+0+1">0+0+1</option>
+            <option value="0+1+0">0+1+0</option>
+            <option value="1+0+0">1+0+0</option>
+        </select>
+
+        <input type="number" min="1" step="1" class="form-control"
+                name="medicines_duration[]" placeholder="Days" required style="width:110px;"
+                oninput="this.value = this.value.replace(/[^0-9]/g,'');" />
+
+        <button type="button" class="btn btn-sm btn-danger remove-med" title="Remove this medicine" style="background:#dc3545;border:none;padding:6px 10px;">
+            <i class="fas fa-trash-alt"></i>
+        </button>
         </div>
+    </div>
     </script>
 
     <script>
         $(document).ready(function() {
             // Add new medicine
-            $("#add_med").click(function() {
-                let sourceTemplate = $("#new_medicine").html();
-                $(".med_list").append(sourceTemplate);
+            $("#add_med").on("click", function() {
+                const tpl = $("#new_medicine").html();
+                $(".med_list").append(tpl);
+            });
+
+            // Remove a medicine row
+            $(document).on("click", ".remove-med", function() {
+                $(this).closest(".med").remove();
             });
         });
     </script>
+
 </body>
 
 </html>

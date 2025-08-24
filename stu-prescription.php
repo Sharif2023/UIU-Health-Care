@@ -608,27 +608,34 @@ $conn->close();
         });
 
         $("#printModalBtn").on("click", function() {
-            // quick print of modal contents
             const $sheet = $(".modal-sheet").clone(true);
+            const cssLinks = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+                .map(l => l.outerHTML).join("\n");
+            const inlineStyles = Array.from(document.querySelectorAll('style'))
+                .map(s => s.outerHTML).join("\n");
+
             const w = window.open("", "_blank");
             w.document.write(`
-    <html>
-      <head>
-        <title>Prescription</title>
-        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-          body { padding: 20px; font-family: Arial, sans-serif; }
-        </style>
-      </head>
-      <body>${$sheet.prop('outerHTML')}</body>
-    </html>
-  `);
+                <html>
+                <head>
+                    <title>Prescription</title>
+                    ${cssLinks}
+                    ${inlineStyles}
+                    <style>
+                    html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 12mm; }
+                    .modal { background: transparent !important; }
+                    .modal-sheet { position: static !important; transform:none !important; box-shadow:none !important; }
+                    @page { size: A4; margin: 12mm; }
+                    .btn, .btn-primary, .close-btn { display: none !important; }
+                    </style>
+                </head>
+                <body>${$sheet.prop("outerHTML")}</body>
+                </html>
+            `);
             w.document.close();
             w.focus();
             w.print();
-            // w.close(); // uncomment if you want the window to auto-close after printing
         });
-
 
         function togglePreviousPrescriptions() {
             var prevDiv = document.querySelector('.previous-prescriptions');

@@ -254,79 +254,122 @@ $conn->close();
         .modal {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 900px;
-            height: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.45);
             z-index: 1000;
         }
 
-        .modal-content {
-            background-color: #d1ffbd;
-            padding: 30px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
+        .modal-sheet {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(1000px, 92vw);
+            background: #fff;
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        /* reuse doctor UI look */
+        .prescription_form {
+            background: white;
+            padding: 0;
             width: 100%;
+            border: none;
         }
 
-        .modal-content h4 {
-            margin-top: 0;
-            text-align: center;
-            color: #333;
-        }
-
-        .modal-details {
+        .header {
             display: flex;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            gap: 30px;
         }
 
-        .modal-details p {
-            font-size: 16px;
-            margin: 8px 0;
-            color: #333;
+        .logo-uiu img {
+            width: 80px;
+            height: 80px;
+            margin-right: 20px;
         }
 
-        .modal-details .left-column,
-        .modal-details .right-column {
-            width: 100%;
+        .credentials {
+            text-align: right;
         }
 
-        .modal-details .right-column {
-            background-color: #f1f1f1;
-            padding: 15px;
+        .credentials h4 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .credentials p,
+        .credentials small {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+
+        .d-header {
+            background-color: #28a745;
+            color: #fff;
+            padding: 6px 8px;
+            font-weight: bold;
+            border-radius: 4px;
+            margin: 12px 0 6px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .left-column,
+        .right-column {
+            width: 50%;
+            padding: 0 10px;
+        }
+
+        .right-column {
+            border-left: 2px solid #ddd;
+        }
+
+        .modal-block {
+            background: #f8fdf6;
+            border: 1px solid #e4f3e0;
+            border-radius: 6px;
+            padding: 10px 12px;
+            min-height: 46px;
+        }
+
+        .med_list p {
+            margin: 6px 0;
+        }
+
+        .btn-primary {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 16px;
+            border: none;
             border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            transition: all .2s ease;
         }
 
-        @media (min-width: 768px) {
-
-            .modal-details .left-column,
-            .modal-details .right-column {
-                width: 48%;
-            }
+        .btn-primary:hover {
+            background-color: #218838;
+            transform: translateY(-1px);
         }
 
         .close-btn {
-            background-color: red;
+            background-color: #dc3545;
             color: white;
-            padding: 10px 20px;
-            cursor: pointer;
             border: none;
             border-radius: 5px;
-            width: 100%;
-            margin-top: 20px;
+            padding: 10px 16px;
+            cursor: pointer;
         }
 
         .close-btn:hover {
-            background-color: #e74c3c;
+            background-color: #c82333;
         }
     </style>
 </head>
@@ -433,22 +476,60 @@ $conn->close();
         </div>
         <!-- Modal Structure -->
         <div class="modal" id="prescriptionModal">
-            <div class="modal-content">
-                <h4>Prescription Details</h4>
-                <div class="modal-details">
-                    <div class="left-column">
-                        <p><strong>Doctor: </strong><span id="doctorName"></span></p>
-                        <p><strong>Symptoms: </strong><span id="symptoms"></span></p>
-                        <p><strong>Tests: </strong><span id="tests"></span></p>
-                        <p><strong>Advice: </strong><span id="advice"></span></p>
+            <div class="modal-sheet">
+                <!-- header (same vibe as prescribe.php) -->
+                <div class="pf-title" style="margin:0 0 10px;">Prescription</div>
+
+                <div class="prescription_form" style="border:none; box-shadow:none; width:100%; padding:0;">
+                    <div class="header" style="margin-bottom:16px;">
+                        <div class="logo-uiu">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/United_International_University_Monogram.svg/800px-United_International_University_Monogram.svg.png" alt="Logo">
+                        </div>
+                        <div class="credentials">
+                            <h4 id="modalDoctorName">Doctor</h4>
+                            <p>UIU Medical Center</p>
+                            <small>Address: UIU Campus, Dhaka</small><br>
+                            <small>Mb. 017XXXXXXXXX</small>
+                        </div>
                     </div>
-                    <div class="right-column">
-                        <p><strong>Medicines: </strong><span id="medicines"></span></p>
-                        <p><strong>Medicine Schedule: </strong><span id="medicineSchedule"></span></p>
-                        <p><strong>Prescription Date: </strong><span id="prescriptionDate"></span></p>
+
+                    <!-- two columns like prescribe.php -->
+                    <div class="container" style="padding:0;">
+                        <!-- Left Column -->
+                        <div class="left-column" style="padding-left:0;">
+                            <div class="desease_details">
+                                <h4 class="d-header">Symptoms</h4>
+                                <div class="modal-block" id="symptoms" style="white-space:pre-wrap;"></div>
+
+                                <h4 class="d-header">Tests</h4>
+                                <div class="modal-block" id="tests" style="white-space:pre-wrap;"></div>
+
+                                <h4 class="d-header">Advice</h4>
+                                <div class="modal-block" id="advice" style="white-space:pre-wrap;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="right-column" style="padding-right:0;">
+                            <span style="font-size: 2em">R <sub>x</sub></span>
+                            <hr>
+                            <div class="medicine">
+                                <section class="med_list" id="rxList">
+                                    <!-- server-rendered <p> lines go here -->
+                                </section>
+                            </div>
+
+                            <div style="margin-top:12px; font-size:14px;">
+                                <strong>Prescription Date: </strong><span id="prescriptionDate"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:18px; display:flex; gap:10px; justify-content:flex-end;">
+                        <button type="button" class="btn btn-primary" id="printModalBtn" style="width:auto;">Print</button>
+                        <button type="button" class="close-btn" id="closeModal" style="width:auto;">Close</button>
                     </div>
                 </div>
-                <button type="button" class="close-btn" id="closeModal">Close</button>
             </div>
         </div>
     </main>
@@ -490,17 +571,27 @@ $conn->close();
                     data: {
                         PrescriptionID: prescriptionID
                     },
-                    success: function(p) { // <— p is already a parsed object
+                    success: function(p) {
                         if (!p || p.error) {
                             alert("No data found for this prescription.");
                             return;
                         }
-                        $("#doctorName").text(p.doctorName || "");
+
+                        // header credentials: doctor name
+                        $("#modalDoctorName").text(p.doctorName || "Doctor");
+
+                        // left column
                         $("#symptoms").text(p.Symptoms || "");
                         $("#tests").text(p.Tests || "");
                         $("#advice").text(p.Advice || "");
-                        $("#medicineSchedule").html(p.MedicineSchedule || "");
+
+                        // right column Rx lines (server already built <p> items with schedule + days)
+                        $("#rxList").html(p.MedicineSchedule || "");
+
+                        // footer meta
                         $("#prescriptionDate").text(p.CreatedAt || "");
+
+                        // open modal
                         $("#prescriptionModal").fadeIn();
                     },
                     error: function(xhr) {
@@ -515,6 +606,29 @@ $conn->close();
                 $("#prescriptionModal").fadeOut();
             });
         });
+
+        $("#printModalBtn").on("click", function() {
+            // quick print of modal contents
+            const $sheet = $(".modal-sheet").clone(true);
+            const w = window.open("", "_blank");
+            w.document.write(`
+    <html>
+      <head>
+        <title>Prescription</title>
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+          body { padding: 20px; font-family: Arial, sans-serif; }
+        </style>
+      </head>
+      <body>${$sheet.prop('outerHTML')}</body>
+    </html>
+  `);
+            w.document.close();
+            w.focus();
+            w.print();
+            // w.close(); // uncomment if you want the window to auto-close after printing
+        });
+
 
         function togglePreviousPrescriptions() {
             var prevDiv = document.querySelector('.previous-prescriptions');

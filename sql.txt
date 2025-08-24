@@ -153,6 +153,7 @@ CREATE TABLE prescriptions (
     Advice TEXT,
     Medicines TEXT,
     MedicineSchedule TEXT,
+    MedicineDuration JSON NULL,
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (AppointmentID) REFERENCES appointments(AppointmentID) ON DELETE CASCADE,
     FOREIGN KEY (DoctorID) REFERENCES doctors(DoctorID) ON DELETE CASCADE

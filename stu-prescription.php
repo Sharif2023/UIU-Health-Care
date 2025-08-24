@@ -45,8 +45,8 @@ $ps->close();
 $message = "No prescriptions found for you."; // Default message
 
 // Fetch prescription details
-$sql = "SELECT p.PrescriptionID, p.Symptoms, p.Tests, p.Advice, p.Medicines, p.MedicineSchedule, 
-               p.CreatedAt, d.FullName AS doctorName
+$sql = "SELECT p.PrescriptionID, p.Symptoms, p.Tests, p.Advice, p.Medicines, p.MedicineSchedule,
+        p.MedicineDuration, p.CreatedAt, d.FullName AS doctorName
         FROM prescriptions p
         JOIN appointments a ON p.AppointmentID = a.AppointmentID
         JOIN doctors d ON p.DoctorID = d.DoctorID
@@ -62,19 +62,29 @@ $prescriptions = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         // Decode JSON values
-        $medicines = json_decode($row['Medicines'], true);
-        $medicineSchedules = json_decode($row['MedicineSchedule'], true);
+        $medicines         = json_decode($row['Medicines'] ?? '[]', true);
+        $medicineSchedules = json_decode($row['MedicineSchedule'] ?? '[]', true);
+        $medicineDurations = json_decode($row['MedicineDuration'] ?? '[]', true);
 
-        // Ensure that the decoded data is an array before proceeding
-        if (is_array($medicines) && is_array($medicineSchedules)) {
-            // Prepare medicines and their schedules for display
+        if (is_array($medicines)) {
             $medicinesList = [];
-            foreach ($medicines as $index => $medicine) {
-                $medicinesList[] = $medicine . ' (' . $medicineSchedules[$index] . ')';
-            }
+            $max = max(count($medicines), count($medicineSchedules), count($medicineDurations));
+            for ($i = 0; $i < $max; $i++) {
+                $m = $medicines[$i] ?? '';
+                $s = $medicineSchedules[$i] ?? '';
+                $d = $medicineDurations[$i] ?? '';
 
-            // Add medicines with schedules to the prescription data
-            $row['Medicines'] = implode(', ', $medicinesList);
+                if ($m === '' && $s === '' && $d === '') continue;
+
+                $label = htmlspecialchars($m);
+                if ($s !== '') $label .= ' (' . htmlspecialchars($s) . ')';
+                if ($d !== '') $label .= ' — ' . htmlspecialchars($d) . ' days';
+
+                $medicinesList[] = $label;
+            }
+            // show joined list in one field
+            $row['Medicines']        = implode(', ', $medicinesList);
+            $row['MedicineSchedule'] = ''; // optional: we’ll show combined only
         }
         $prescriptions[] = $row;
     }
@@ -97,7 +107,7 @@ if (isset($_GET['PrescriptionID'])) {
     $prescriptionID = (int)$_GET['PrescriptionID'];
 
     $sql = "SELECT p.PrescriptionID, p.Symptoms, p.Tests, p.Advice, p.Medicines, p.MedicineSchedule,
-                   p.CreatedAt, d.FullName AS doctorName
+            p.MedicineDuration, p.CreatedAt, d.FullName AS doctorName
             FROM prescriptions p
             JOIN doctors d ON p.DoctorID = d.DoctorID
             WHERE p.PrescriptionID = ?";
@@ -118,16 +128,23 @@ if (isset($_GET['PrescriptionID'])) {
 
     $meds = json_decode($prescription['Medicines'] ?? '[]', true);
     $sch  = json_decode($prescription['MedicineSchedule'] ?? '[]', true);
+    $dur  = json_decode($prescription['MedicineDuration'] ?? '[]', true);
 
     $medicinesText = '';
-    if (is_array($meds) && is_array($sch)) {
-        $max = max(count($meds), count($sch));
+    if (is_array($meds)) {
+        $max = max(count($meds), count($sch), count($dur));
         for ($i = 0; $i < $max; $i++) {
             $m = $meds[$i] ?? '';
             $s = $sch[$i]  ?? '';
-            if ($m !== '' || $s !== '') {
-                $medicinesText .= '<p>' . htmlspecialchars($m) . ' (' . htmlspecialchars($s) . ')</p>';
-            }
+            $d = $dur[$i]  ?? '';
+
+            if ($m === '' && $s === '' && $d === '') continue;
+
+            $line = htmlspecialchars($m);
+            if ($s !== '') $line .= ' (' . htmlspecialchars($s) . ')';
+            if ($d !== '') $line .= ' — ' . htmlspecialchars($d) . ' days';
+
+            $medicinesText .= '<p>' . $line . '</p>';
         }
     }
 
@@ -397,6 +414,7 @@ $conn->close();
                         <h4>Prescription ID: <?php echo htmlspecialchars($prescription['PrescriptionID']); ?></h4>
                         <p><strong>Doctor: </strong><?php echo htmlspecialchars($prescription['doctorName']); ?></p>
                         <p><strong>Symptoms: </strong><?php echo htmlspecialchars($prescription['Symptoms']); ?></p>
+                        <p><strong>Medicines: </strong><?php echo $prescription['Medicines']; ?></p>
                         <p><strong>Tests: </strong><?php echo htmlspecialchars($prescription['Tests']); ?></p>
                         <p><strong>Advice: </strong><?php echo htmlspecialchars($prescription['Advice']); ?></p>
                         <p><strong>Prescription Date: </strong><?php echo htmlspecialchars($prescription['CreatedAt']); ?></p>

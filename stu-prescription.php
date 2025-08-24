@@ -292,18 +292,18 @@ $conn->close();
             margin-right: 20px;
         }
 
-        .credentials {
+        .p-credentials {
             text-align: right;
         }
 
-        .credentials h4 {
+        .p-credentials h4 {
             margin: 0;
             font-size: 18px;
             font-weight: bold;
         }
 
-        .credentials p,
-        .credentials small {
+        .p-credentials p,
+        .p-credentials small {
             margin: 4px 0;
             font-size: 14px;
         }
@@ -317,7 +317,7 @@ $conn->close();
             margin: 12px 0 6px;
         }
 
-        .container {
+        .p-container {
             display: flex;
             gap: 20px;
         }
@@ -376,7 +376,7 @@ $conn->close();
 
 <body>
     <header id="header" class="header d-flex align-items-center sticky-top">
-        <div class="container-fluid container-l position-relative d-flex align-items-center justify-content-between">
+        <div class="container-fluid p-container-l position-relative d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <img src="assets/img/header-logo.png" alt="header-logo">
@@ -485,7 +485,7 @@ $conn->close();
                         <div class="logo-uiu">
                             <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/United_International_University_Monogram.svg/800px-United_International_University_Monogram.svg.png" alt="Logo">
                         </div>
-                        <div class="credentials">
+                        <div class="p-credentials">
                             <h4 id="modalDoctorName">Doctor</h4>
                             <p>UIU Medical Center</p>
                             <small>Address: UIU Campus, Dhaka</small><br>
@@ -494,7 +494,7 @@ $conn->close();
                     </div>
 
                     <!-- two columns like prescribe.php -->
-                    <div class="container" style="padding:0;">
+                    <div class="p-container" style="padding:0;">
                         <!-- Left Column -->
                         <div class="left-column" style="padding-left:0;">
                             <div class="desease_details">
@@ -577,7 +577,7 @@ $conn->close();
                             return;
                         }
 
-                        // header credentials: doctor name
+                        // header p-credentials: doctor name
                         $("#modalDoctorName").text(p.doctorName || "Doctor");
 
                         // left column

@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/config.php';
+
 // Ensure the request is via GET and contains a valid blog ID
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     echo json_encode(['error' => 'Invalid blog ID']);
@@ -8,11 +10,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $blogID = $_GET['id'];
 
 // Connect to the database
-$conn = new mysqli("localhost", "root", "", "uiu_healthcare");
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+$conn = db_connect();
 
 // Query the blog details based on the blogID
 $stmt = $conn->prepare("SELECT * FROM blogs WHERE BlogID = ?");

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/config.php';
 
 // If not logged in, redirect to login
 if (!isset($_SESSION['studentID'])) {
@@ -11,14 +12,8 @@ if (!isset($_SESSION['studentID'])) {
 $studentID = $_SESSION['studentID'];
 $fullName = $_SESSION['fullName'];
 
-// Fetch email from database
-$servername = "localhost"; // Change if your servername is different
-$username = "root"; // Your DB username
-$password = ""; // Your DB password
-$database = "uiu_healthcare"; // Your DB name
-
 // Create DB connection
-$conn = new mysqli($servername, $username, $password, $database);
+$conn = db_connect();
 
 // Check connection
 if ($conn->connect_error) {

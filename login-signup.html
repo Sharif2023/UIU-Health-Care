@@ -1,217 +1,205 @@
-<!DOCTYPE html>
-<html lang="en">
+box-sizing: border-box;
+font-family: Arial, sans-serif;
+}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In / Sign Up - UIU Health Care</title>
-    <link href="assets/img/title.png" rel="icon">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+html,
+body {
+height: 100%;
+width: 100%;
+}
 
-        html,
-        body {
-            height: 100%;
-            width: 100%;
-        }
+body {
+display: flex;
+justify-content: center;
+align-items: center;
+}
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+.container {
+display: flex;
+width: 100vw;
+height: 100vh;
+justify-content: center;
+align-items: center;
+}
 
-        .container {
-            display: flex;
-            width: 100vw;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-        }
+.content-box {
+display: flex;
+width: 80vw;
+height: 90vh;
+background: white;
+overflow: hidden;
+position: relative;
+}
 
-        .content-box {
-            display: flex;
-            width: 80vw;
-            height: 90vh;
-            background: white;
-            overflow: hidden;
-            position: relative;
-        }
+.illustration {
+flex: 1;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
 
-        .illustration {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+.illustration img {
+max-width: 90%;
+height: auto;
+}
 
-        .illustration img {
-            max-width: 90%;
-            height: auto;
-        }
+.form-container {
+flex: 1;
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding: 40px;
+position: relative;
+}
 
-        .form-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px;
-            position: relative;
-        }
+h2 {
+font-size: 26px;
+margin-bottom: 10px;
+text-align: center;
+}
 
-        h2 {
-            font-size: 26px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
+form {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
 
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+form input {
+width: 80%;
+padding: 12px;
+margin-bottom: 12px;
+border: 2px solid #ccc;
+border-radius: 8px;
+font-size: 16px;
+transition: all 0.3s ease-in-out;
+background-color: #f9f9f9;
+box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+}
 
-        form input {
-            width: 80%;
-            padding: 12px;
-            margin-bottom: 12px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease-in-out;
-            background-color: #f9f9f9;
-            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
-        }
+form input:focus {
+border-color: #4caf4f;
+background-color: #fff;
+box-shadow: 0 0 8px rgba(76, 175, 79, 0.4);
+outline: none;
+}
 
-        form input:focus {
-            border-color: #4caf4f;
-            background-color: #fff;
-            box-shadow: 0 0 8px rgba(76, 175, 79, 0.4);
-            outline: none;
-        }
+form select {
+width: 80%;
+color: #555;
+padding: 12px;
+margin-bottom: 12px;
+border: 2px solid #ccc;
+border-radius: 8px;
+font-size: 16px;
+transition: all 0.3s ease-in-out;
+background-color: #f9f9f9;
+box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+}
 
-        form select {
-            width: 80%;
-            color: #555;
-            padding: 12px;
-            margin-bottom: 12px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease-in-out;
-            background-color: #f9f9f9;
-            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-        }
-
-        form select:focus {
-            border-color: #4caf4f;
-            background-color: #fff;
-            box-shadow: 0 0 8px rgba(76, 175, 79, 0.4);
-            outline: none;
-        }
+form select:focus {
+border-color: #4caf4f;
+background-color: #fff;
+box-shadow: 0 0 8px rgba(76, 175, 79, 0.4);
+outline: none;
+}
 
 
-        form input::placeholder {
-            color: #aaa;
-            transition: all 0.2s;
-        }
+form input::placeholder {
+color: #aaa;
+transition: all 0.2s;
+}
 
-        form input:focus::placeholder {
-            opacity: 0;
-        }
+form input:focus::placeholder {
+opacity: 0;
+}
 
-        .options {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            margin-bottom: 15px;
-            width: 80%;
-            font-size: medium;
-        }
+.options {
+display: flex;
+justify-content: space-between;
+font-size: 12px;
+margin-bottom: 15px;
+width: 80%;
+font-size: medium;
+}
 
-        .options label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
+.options label {
+display: flex;
+align-items: center;
+gap: 5px;
+cursor: pointer;
+}
 
-        .options input[type="checkbox"] {
-            width: 14px;
-            height: 14px;
-            margin-top: 10px;
-        }
+.options input[type="checkbox"] {
+width: 14px;
+height: 14px;
+margin-top: 10px;
+}
 
-        button {
-            width: 80%;
-            padding: 10px;
-            background: #4caf4f;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
-        }
+button {
+width: 80%;
+padding: 10px;
+background: #4caf4f;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 16px;
+transition: 0.3s;
+}
 
-        button:hover {
-            background: #388e3c;
-        }
+button:hover {
+background: #388e3c;
+}
 
-        .forgot-pass {
-            color: #4caf4f;
-            text-decoration: none;
-            margin-top: 5px;
-        }
+.forgot-pass {
+color: #4caf4f;
+text-decoration: none;
+margin-top: 5px;
+}
 
-        .forgot-pass:hover {
-            text-decoration: underline;
-        }
+.forgot-pass:hover {
+text-decoration: underline;
+}
 
-        .toggle-button {
-            background: none;
-            border: none;
-            color: #4caf4f;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 15px;
-            width: 100%;
-        }
+.toggle-button {
+background: none;
+border: none;
+color: #4caf4f;
+cursor: pointer;
+font-size: 14px;
+margin-top: 15px;
+width: 100%;
+}
 
-        .toggle-button:hover {
-            text-decoration: underline;
-            background: none;
-        }
+.toggle-button:hover {
+text-decoration: underline;
+background: none;
+}
 
-        .signup-form {
-            display: none;
-        }
+.signup-form {
+display: none;
+}
 
-        @media (max-width: 768px) {
-            .content-box {
-                flex-direction: column;
-                height: auto;
-                width: 95vw;
-            }
+@media (max-width: 768px) {
+.content-box {
+flex-direction: column;
+height: auto;
+width: 95vw;
+}
 
-            .illustration img {
-                max-width: 60%;
-            }
+.illustration img {
+max-width: 60%;
+}
 
-            .form-container {
-                padding: 30px;
-            }
-        }
-    </style>
+.form-container {
+padding: 30px;
+}
+}
+</style>
 </head>
 
 <body>
@@ -225,7 +213,7 @@
                 <!-- Sign In Form -->
                 <div class="signin-form">
                     <h2>Sign In</h2>
-                    <form  action="login.php" method="post">
+                    <form action="https://uiu-healthcare.infinityfreeapp.com/login.php" method="post">
                         <input type="text" name="studentIdOrEmail" placeholder="ID or Email" required>
                         <input type="password" name="password" placeholder="Password" required>
                         <div class="options">
@@ -240,7 +228,7 @@
                 <!-- Sign Up Form -->
                 <div class="signup-form">
                     <h2>Sign Up</h2>
-                    <form action="signup.php" method="post">
+                    <form action="https://uiu-healthcare.infinityfreeapp.com/signup.php" method="post">
                         <input type="text" name="studentID" placeholder="Student ID" required>
                         <input type="email" name="email" placeholder="Email"
                             pattern="[a-zA-Z]+[0-9]+@([a-zA-Z]+)\.uiu\.ac\.bd"

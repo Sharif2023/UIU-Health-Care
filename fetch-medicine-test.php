@@ -1,17 +1,9 @@
 <?php
 header('Content-Type: application/json');
-
-// DB credentials
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "uiu_healthcare";
+require_once __DIR__ . '/config.php';
 
 // DB connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-  die(json_encode(['error' => 'Database connection failed']));
-}
+$conn = db_connect();
 
 // Get and sanitize parameters
 $type = $_GET['type'] ?? 'medicine';

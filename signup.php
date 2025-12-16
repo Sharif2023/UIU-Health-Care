@@ -1,15 +1,8 @@
 <?php
+require_once __DIR__ . '/config.php';
 
-// Create a connection
-$conn = new mysqli("localhost", "root", "", "uiu_healthcare");
-
-// Check the connection
-if ($conn->connect_error) {
-    die("<script>
-    alert('Database connection failed!'); 
-    window.location.href = 'login-signup.html';
-    </script>");
-}
+// Create a connection to deployed database
+$conn = db_connect();
 
 // Check if form data is received
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

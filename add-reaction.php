@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/config.php';
 
 // Ensure the student is logged in
 if (!isset($_SESSION['studentID'])) {
@@ -11,11 +12,7 @@ $blogID = $_POST['blogID'];
 $studentID = $_POST['studentID'];
 
 // Connect to the database
-$conn = new mysqli("localhost", "root", "", "uiu_healthcare");
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+$conn = db_connect();
 
 // Check if the student has already reacted to this blog
 $stmt = $conn->prepare("SELECT ReactionID FROM blog_reactions WHERE BlogID = ? AND StudentID = ?");

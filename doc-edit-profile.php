@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/config.php';
 
 // If not logged in, redirect to login
 if (!isset($_SESSION['doctorID'])) {
@@ -10,18 +11,8 @@ if (!isset($_SESSION['doctorID'])) {
 // Get doctor's ID from session
 $doctorID = $_SESSION['doctorID'];
 
-// Connect to your database
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "uiu_healthcare";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check database connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Connect to deployed database
+$conn = db_connect();
 
 // Fetch doctor details from database
 $sql = "SELECT * FROM doctors WHERE DoctorID = ?";

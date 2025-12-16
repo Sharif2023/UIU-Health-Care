@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/config.php';
 
 // Redirect if not logged in
 if (!isset($_SESSION['studentID'])) {
@@ -10,15 +11,8 @@ if (!isset($_SESSION['studentID'])) {
 $studentID = $_SESSION['studentID'];
 $fullName = $_SESSION['fullName'];
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "uiu_healthcare";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+// Connect to deployed database
+$conn = db_connect();
 
 $sql = "SELECT d.ProfilePicture
         FROM students s

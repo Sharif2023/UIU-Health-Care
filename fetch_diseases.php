@@ -4,17 +4,10 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "uiu_healthcare";
+require_once __DIR__ . '/config.php';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = db_connect();
 $conn->set_charset("utf8");
-
-if ($conn->connect_error) {
-    die(json_encode(["error" => "Database connection failed: " . $conn->connect_error]));
-}
 
 $searchTerm = isset($_GET['query']) ? strtolower($conn->real_escape_string($_GET['query'])) : "";
 $age = isset($_GET['age']) ? intval($_GET['age']) : null;

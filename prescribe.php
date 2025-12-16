@@ -20,11 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $medicineDurations = isset($_POST['medicines_duration']) ? json_encode($_POST['medicines_duration']) : json_encode([]);
 
     // Database connection
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "uiu_healthcare";
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    require_once __DIR__ . '/config.php';
+    $conn = db_connect();
 
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);

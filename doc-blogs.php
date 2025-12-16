@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__ . '/config.php';
+
 if (!isset($_SESSION['doctorID'])) {
     header('Location: login-signup.html');
     exit();
@@ -25,11 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Connect to the database
-        $conn = new mysqli("localhost", "root", "", "uiu_healthcare");
-        if ($conn->connect_error) {
-            echo json_encode(['error' => 'Database connection failed.']);
-            exit();
-        }
+        $conn = db_connect();
 
         // Insert the blog into the database
         $stmt = $conn->prepare("INSERT INTO blogs (DoctorID, Title, Content, Image) VALUES (?, ?, ?, ?)");
@@ -49,10 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$conn = new mysqli("localhost", "root", "", "uiu_healthcare");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+$conn = db_connect();
 // Fetch blogs and reaction counts
 $sql = "SELECT b.BlogID, b.Title, b.Content, b.Image, b.CreatedAt, 
                IFNULL(COUNT(br.ReactionID), 0) AS reactionCount

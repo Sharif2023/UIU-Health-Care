@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/config.php';
 
 // If not logged in, redirect to login
 if (!isset($_SESSION['studentID'])) {
@@ -12,16 +13,7 @@ $studentID = $_SESSION['studentID'];
 $fullName = $_SESSION['fullName'];
 
 // Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "uiu_healthcare";
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check database connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+$conn = db_connect();
 
 // Check if form is submitted
 $successMessage = "";

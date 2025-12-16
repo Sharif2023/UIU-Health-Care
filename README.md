@@ -1,4 +1,4 @@
-# ![UIU Health Care Logo](assets/img/header-logo.png) UIU Health Care Management System
+# <img src="assets/img/header-logo.png" alt="UIU Health Care Logo" width="3%"> UIU Health Care Management System
 
 ![Status](https://img.shields.io/badge/Status-Live-success)
 ![Version](https://img.shields.io/badge/Version-1.0-blue)

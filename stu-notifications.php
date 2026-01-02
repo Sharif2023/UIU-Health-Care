@@ -25,26 +25,46 @@ $stmt->bind_param("s", $studentID);
 $stmt->execute();
 $result = $stmt->get_result();
 $student = $result->fetch_assoc();
-
 $stmt->close();
 
-// Now set the profile picture
+// Set the profile picture
 $dropdownProfilePicture = $student['ProfilePicture'] ?? '';
-
 if (empty($dropdownProfilePicture)) {
     $dropdownProfilePicture = "https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg";
 }
 
-// Fetch blogs and reaction counts
-$sql = "SELECT b.BlogID, b.Title, b.Content, b.Image, b.CreatedAt, 
-               IFNULL(COUNT(br.ReactionID), 0) AS reactionCount
-        FROM blogs b
-        LEFT JOIN blog_reactions br ON b.BlogID = br.BlogID
-        GROUP BY b.BlogID
-        ORDER BY b.CreatedAt DESC";
+// Fetch notifications for this student
+$filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
+$sql = "SELECT NotificationID, Title, Message, IsRead, CreatedAt 
+        FROM notifications 
+        WHERE UserID = ? AND UserType = 'student'";
 
-$result = $conn->query($sql);
+if ($filter === 'unread') {
+    $sql .= " AND IsRead = FALSE";
+} elseif ($filter === 'read') {
+    $sql .= " AND IsRead = TRUE";
+}
 
+$sql .= " ORDER BY CreatedAt DESC";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $studentID);
+$stmt->execute();
+$notifications = $stmt->get_result();
+$stmt->close();
+
+// Get unread count
+$unreadSql = "SELECT COUNT(*) as unread_count FROM notifications 
+              WHERE UserID = ? AND UserType = 'student' AND IsRead = FALSE";
+$unreadStmt = $conn->prepare($unreadSql);
+$unreadStmt->bind_param("s", $studentID);
+$unreadStmt->execute();
+$unreadResult = $unreadStmt->get_result();
+$unreadData = $unreadResult->fetch_assoc();
+$unreadCount = $unreadData['unread_count'];
+$unreadStmt->close();
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +73,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students Blogs - UIU HealthCare</title>
+    <title>Notifications - UIU HealthCare</title>
 
     <!-- Favicons -->
     <link href="assets/img/title.png" rel="icon">
@@ -71,16 +91,17 @@ $result = $conn->query($sql);
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <!-- Main CSS File -->
+    
+    <!-- Main CSS Files -->
     <link href="assets/css/main.css" rel="stylesheet">
-    <link href="assets/css/blogs.css" rel="stylesheet">
+    <link href="assets/css/notifications.css" rel="stylesheet">
+    <link href="assets/css/responsive-mobile.css" rel="stylesheet">
 </head>
 
 <body>
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container-fluid container-l position-relative d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
                 <img src="assets/img/header-logo.png" alt="header-logo">
                 <h1 class="sitename">UIU<span> HealthCare</span></h1>
             </a>
@@ -89,17 +110,16 @@ $result = $conn->query($sql);
                 <ul>
                     <li><a href="homepagestudent.php">Home</a></li>
                     <li><a href="stu-doctor.php">Doctor</a></li>
-                    <li>
                     <li><a href="nearby-hospitals.php">Hospitals</a></li>
-                    </li>
                     <li><a href="stu-medicine-test.php">Medicine & Test</a></li>
-                    <li><a href="stu-blogs.php" class="active">Blogs</a></li>
+                    <li><a href="stu-blogs.php">Blogs</a></li>
                     <li><a href="stu-about.php">About</a></li>
                     <li onclick="openDiagnoseNav()"><img src="assets/img/diagnose-bot.png" height="40px" width="40px"
                             alt="Diagnosis-tool"></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
+
             <!-- Profile Dropdown -->
             <div class="profile-container">
                 <div class="profile-btn" id="profileButton">
@@ -121,6 +141,9 @@ $result = $conn->query($sql);
                     <a href="stu-notifications.php">
                         <div class="dropdown-item">
                             <i class="bi bi-bell"></i> Notification
+                            <?php if ($unreadCount > 0): ?>
+                                <span class="badge bg-danger ms-2"><?php echo $unreadCount; ?></span>
+                            <?php endif; ?>
                         </div>
                     </a>
                     <a href="help-center.php">
@@ -147,8 +170,75 @@ $result = $conn->query($sql);
             </div>
         </div>
     </header>
+
     <main class="main">
-        <!--Code of DiagnoseBot-->
+        <div class="notification-container">
+            <div class="notification-header">
+                <h2><i class="bi bi-bell-fill"></i> Notifications</h2>
+                <div class="notification-actions">
+                    <?php if ($unreadCount > 0): ?>
+                        <button class="mark-all-read-btn" onclick="markAllAsRead()">
+                            <i class="bi bi-check-all"></i> Mark All as Read
+                        </button>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="notification-filter">
+                <button class="filter-btn <?php echo $filter === 'all' ? 'active' : ''; ?>" 
+                        onclick="filterNotifications('all')">
+                    All (<?php echo $notifications->num_rows; ?>)
+                </button>
+                <button class="filter-btn <?php echo $filter === 'unread' ? 'active' : ''; ?>" 
+                        onclick="filterNotifications('unread')">
+                    Unread (<?php echo $unreadCount; ?>)
+                </button>
+                <button class="filter-btn <?php echo $filter === 'read' ? 'active' : ''; ?>" 
+                        onclick="filterNotifications('read')">
+                    Read
+                </button>
+            </div>
+
+            <div class="notification-list">
+                <?php if ($notifications->num_rows > 0): ?>
+                    <?php while ($notif = $notifications->fetch_assoc()): ?>
+                        <div class="notification-item <?php echo $notif['IsRead'] ? '' : 'unread'; ?>" 
+                             onclick="markAsRead(<?php echo $notif['NotificationID']; ?>)">
+                            <div class="notification-icon">
+                                <i class="bi bi-bell-fill"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title"><?php echo htmlspecialchars($notif['Title']); ?></div>
+                                <div class="notification-message"><?php echo htmlspecialchars($notif['Message']); ?></div>
+                                <div class="notification-time">
+                                    <i class="bi bi-clock"></i>
+                                    <?php 
+                                        $time = strtotime($notif['CreatedAt']);
+                                        $diff = time() - $time;
+                                        if ($diff < 60) echo "Just now";
+                                        elseif ($diff < 3600) echo floor($diff/60) . " minutes ago";
+                                        elseif ($diff < 86400) echo floor($diff/3600) . " hours ago";
+                                        elseif ($diff < 604800) echo floor($diff/86400) . " days ago";
+                                        else echo date('M d, Y', $time);
+                                    ?>
+                                </div>
+                            </div>
+                            <?php if (!$notif['IsRead']): ?>
+                                <span class="notification-badge">New</span>
+                            <?php endif; ?>
+                        </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <div class="empty-state">
+                        <i class="bi bi-bell-slash"></i>
+                        <h3>No Notifications</h3>
+                        <p>You're all caught up! Check back later for updates.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- Diagnosis Bot Modal -->
         <div class="diagnosebot-nav-modal" id="diagnosisNav">
             <button class="bot-blog-close-btn" onclick="closeDiagnoseNav()">&times;</button>
             <h2>Diagnosis Tool</h2>
@@ -156,150 +246,77 @@ $result = $conn->query($sql);
                 onkeyup="showSuggestions()" class="botInput">
             <input type="number" id="ageInput" placeholder="Enter your age..." class="botInput">
             <input type="number" id="weightInput" placeholder="Enter your weight (kg)..." class="botInput">
-
             <select id="botGenderInput">
                 <option value="">Select Gender...</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
             </select>
-
             <div class="suggestions" id="suggestionsBox"></div>
             <button onclick="getDiagnosis()" class="botButtonProperty">Diagnose</button>
             <div class="result" id="diagnosisResult"></div>
-            <br><button id="solutionBtn" onclick="showSolution()" style="display:none;" class="botButtonProperty">First
-                Aid</button><br>
+            <br><button id="solutionBtn" onclick="showSolution()" style="display:none;" class="botButtonProperty">First Aid</button><br>
             <div class="solution" id="solutionText"></div>
-        </div>
-
-        <!--Blog-->
-        <div class="blog-card-deck">
-            <?php
-            while ($row = $result->fetch_assoc()) {
-                $blogID = $row['BlogID'];
-                $title = $row['Title'];
-                $content = $row['Content'];
-                $image = $row['Image'];
-                $createdAt = $row['CreatedAt'];
-                $reactionCount = $row['reactionCount']; // Reaction count for each blog
-
-                // Display each blog card
-                echo '<div class="blog-card">';
-                echo '<img class="blog-card-img" src="blogs_img/' . $image . '" alt="' . $title . '">';
-                echo '<div class="blog-card-body">';
-                echo '<h5 class="blog-card-title">' . $title . '</h5>';
-                echo '<p class="blog-card-text">' . substr($content, 0, 100) . '...</p>';
-                echo '</div>';
-                echo '<div class="blog-modal-link"><a href="#" onclick="openBlogModal(' . $blogID . ')">Read More</a></div>';
-                echo '<div class="blog-card-footer"><small class="blog-card-footer-text">posted ' . $createdAt . '</small></div>';
-                echo '</div>';
-            }
-            ?>
-        </div>
-
-        <!-- Blog Modal -->
-        <div id="blogModal" class="blog-modal">
-            <div class="blog-modal-content">
-                <button onclick="closeBlogModal()" class="blog-close-btn">&times;</button>
-                <h2 id="modalTitle">Blog Title</h2>
-                <img id="modalImage" src="" alt="Blog Image">
-                <p id="modalContent">Full blog content goes here...</p>
-                <div id="modalTime" class="blog-modal-time">Posted just now</div>
-                <div class="modal-footer">
-                    <button class="love-btn" onclick="toggleLove(<?php echo $blogID; ?>)">💚 <span id="loveCount"><?php echo $reactionCount; ?></span></button>
-                    <button class="blog-close-modal-btn" onclick="closeBlogModal()">Close</button>
-                </div>
-            </div>
         </div>
     </main>
 
     <footer id="footer" class="footer light-background">
-
         <div class="container">
-            <div class="copyright text-center ">
-                <p>© <span>Copyright</span> <strong class="px-1 sitename">UIU HealthCare</strong> <span>All Rights
-                        Reserved</span></p>
+            <div class="copyright text-center">
+                <p>© <span>Copyright</span> <strong class="px-1 sitename">UIU HealthCare</strong> <span>All Rights Reserved</span></p>
             </div>
             <div class="social-links d-flex justify-content-center">
-                <a href="https://twitter.com/UIU_BD" target="_blank"><i class="bi bi-twitter-x"></i></a>
-                <a href="https://www.facebook.com/uiu.ac.bd" target="_blank"><i class="bi bi-facebook"></i></a>
-                <a href="https://www.instagram.com/uiu_bd/" target="_blank"><i class="bi bi-instagram"></i></a>
-                <a href="https://www.linkedin.com/school/uiu-bd/" target="_blank"><i class="bi bi-linkedin"></i></a>
+                <a href="https://twitter.com/UIU_BD"><i class="bi bi-twitter-x"></i></a>
+                <a href="https://www.facebook.com/uiu.ac.bd"><i class="bi bi-facebook"></i></a>
+                <a href="https://www.instagram.com/uiu_bd/"><i class="bi bi-instagram"></i></a>
+                <a href="https://www.linkedin.com/school/uiu-bd/"><i class="bi bi-linkedin"></i></a>
             </div>
             <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you've purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
                 Designed by <a href="https://github.com/Sharif2023">Shariful Islam</a>
             </div>
         </div>
-
     </footer>
-    <!--Javascript-->
+
     <script src="assets/js/student.js"></script>
     <script>
-        function openBlogModal(blogID) {
-            fetch(`get-blog.php?id=${blogID}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                        return;
-                    }
-                    document.getElementById('modalTitle').textContent = data.title;
-                    document.getElementById('modalContent').textContent = data.content;
-                    document.getElementById('modalContent').style.whiteSpace = "pre-wrap";
-                    document.getElementById('modalImage').src = 'blogs_img/' + data.image;
-                    document.getElementById('modalTime').textContent = 'Posted: ' + data.createdAt;
-                    document.getElementById('blogModal').style.display = 'flex';
-                });
+        function markAsRead(notificationId) {
+            fetch('forms/mark-notification-read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'notification_id=' + notificationId
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
 
-        function closeBlogModal() {
-            document.getElementById('blogModal').style.display = 'none';
+        function markAllAsRead() {
+            fetch('forms/mark-notification-read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'mark_all=true&user_id=<?php echo $studentID; ?>&user_type=student'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
 
-        // Optional: close modal on outside click
-        window.addEventListener('click', function(e) {
-            const modal = document.getElementById('blogModal');
-            if (e.target === modal) {
-                closeBlogModal();
-            }
-        });
-
-        // Optional: ESC key to close modal
-        window.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeBlogModal();
-            }
-        });
-
-        function toggleLove(blogID) {
-            const studentID = <?php echo json_encode($studentID); ?>; // Use PHP to dynamically insert studentID
-
-            fetch('add-reaction.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: `blogID=${blogID}&studentID=${studentID}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                        return;
-                    }
-                    document.getElementById('loveCount').textContent = data.reactionCount; // Update love count
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('There was an error processing your reaction.');
-                });
+        function filterNotifications(filter) {
+            window.location.href = 'stu-notifications.php?filter=' + filter;
         }
     </script>
-
 </body>
 
 </html>

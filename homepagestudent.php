@@ -160,20 +160,28 @@ if (empty($dropdownProfilePicture)) {
               <i class="bi bi-person"></i> My Profile
             </div>
           </a>
-          <div class="dropdown-item">
-            <i class="bi bi-bell"></i> Notification
-          </div>
-          <div class="dropdown-item">
-            <i class="bi bi-question-circle"></i> Help Center
-          </div>
-          <div class="dropdown-item">
-            <i class="bi bi-gear"></i> Settings and Privacy
-          </div>
-          <div class="dropdown-item">
-            <i class="bi bi-exclamation-triangle"></i> Report a problem
-          </div>
-          <a href="login-signup.html">
-            <div class="logout-btn">
+          <a href="stu-notifications.php">
+                        <div class="dropdown-item">
+                            <i class="bi bi-bell"></i> Notification
+                        </div>
+                    </a>
+          <a href="help-center.php">
+                        <div class="dropdown-item">
+                            <i class="bi bi-question-circle"></i> Help Center
+                        </div>
+                    </a>
+          <a href="stu-settings.php">
+                        <div class="dropdown-item">
+                            <i class="bi bi-gear"></i> Settings and Privacy
+                        </div>
+                    </a>
+          <a href="report-problem.php">
+                        <div class="dropdown-item">
+                            <i class="bi bi-exclamation-triangle"></i> Report a problem
+                        </div>
+                    </a>
+          <a href="forms/logout.php">
+                        <div class="logout-btn">
               <i class="bi bi-box-arrow-right"></i> Log out
             </div>
           </a>
@@ -232,10 +240,10 @@ if (empty($dropdownProfilePicture)) {
             Reserved</span></p>
       </div>
       <div class="social-links d-flex justify-content-center">
-        <a href=""><i class="bi bi-twitter-x"></i></a>
-        <a href=""><i class="bi bi-facebook"></i></a>
-        <a href=""><i class="bi bi-instagram"></i></a>
-        <a href=""><i class="bi bi-linkedin"></i></a>
+        <a href="https://twitter.com/UIU_BD" target="_blank"><i class="bi bi-twitter-x"></i></a>
+        <a href="https://www.facebook.com/uiu.ac.bd" target="_blank"><i class="bi bi-facebook"></i></a>
+        <a href="https://www.instagram.com/uiu_bd/" target="_blank"><i class="bi bi-instagram"></i></a>
+        <a href="https://www.linkedin.com/school/uiu-bd/" target="_blank"><i class="bi bi-linkedin"></i></a>
       </div>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->

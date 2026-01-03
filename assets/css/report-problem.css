@@ -1,0 +1,341 @@
+/* ================================================
+   REPORT PROBLEM PAGE STYLES
+   ================================================ */
+
+.report-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.report-header {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.report-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.report-header p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+}
+
+.report-form-container {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1f1f1f;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-section h3 i {
+    color: #f5576c;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #1f1f1f;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-group label .required {
+    color: #f5576c;
+    margin-left: 0.2rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.85rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #f5576c;
+    box-shadow: 0 0 0 4px rgba(245, 87, 108, 0.1);
+}
+
+textarea.form-control {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.category-option {
+    position: relative;
+}
+
+.category-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.category-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.category-option input[type="radio"]:checked+.category-label {
+    background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+    border-color: #f5576c;
+}
+
+.category-label i {
+    font-size: 1.5rem;
+    color: #f5576c;
+}
+
+.category-info {
+    flex: 1;
+}
+
+.category-name {
+    font-weight: 600;
+    color: #1f1f1f;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.category-desc {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.priority-chips {
+    display: flex;
+    gap: 1rem;
+}
+
+.priority-chip {
+    position: relative;
+}
+
+.priority-chip input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.priority-label {
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.priority-chip input[type="radio"]:checked+.priority-label {
+    border-color: #f5576c;
+    color: white;
+}
+
+.priority-chip input[value="Low"]:checked+.priority-label {
+    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+}
+
+.priority-chip input[value="Medium"]:checked+.priority-label {
+    background: linear-gradient(135deg, #ffa751 0%, #ffe259 100%);
+}
+
+.priority-chip input[value="High"]:checked+.priority-label {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.file-upload {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2rem;
+    background: #f8f9fa;
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-upload-label:hover {
+    background: #e9ecef;
+    border-color: #f5576c;
+}
+
+.file-upload-label i {
+    font-size: 2rem;
+    color: #f5576c;
+}
+
+.file-info {
+    text-align: center;
+}
+
+.file-info .file-title {
+    font-weight: 600;
+    color: #1f1f1f;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.file-info .file-hint {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+}
+
+.btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.success-message {
+    display: none;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(132, 250, 176, 0.2) 0%, rgba(143, 211, 244, 0.2) 100%);
+    border: 2px solid #84fab0;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.success-message.show {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-message i {
+    font-size: 3rem;
+    color: #84fab0;
+    margin-bottom: 1rem;
+}
+
+.success-message h3 {
+    color: #1f1f1f;
+    margin-bottom: 0.5rem;
+}
+
+.success-message p {
+    color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .report-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .report-header {
+        padding: 2rem 1.5rem;
+    }
+
+    .report-header h1 {
+        font-size: 2rem;
+    }
+
+    .report-form-container {
+        padding: 1.5rem;
+    }
+
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .priority-chips {
+        flex-direction: column;
+    }
+
+    .priority-label {
+        display: block;
+        text-align: center;
+    }
+}

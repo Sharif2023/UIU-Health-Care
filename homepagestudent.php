@@ -161,27 +161,27 @@ if (empty($dropdownProfilePicture)) {
             </div>
           </a>
           <a href="stu-notifications.php">
-                        <div class="dropdown-item">
-                            <i class="bi bi-bell"></i> Notification
-                        </div>
-                    </a>
+            <div class="dropdown-item">
+              <i class="bi bi-bell"></i> Notification
+            </div>
+          </a>
           <a href="help-center.php">
-                        <div class="dropdown-item">
-                            <i class="bi bi-question-circle"></i> Help Center
-                        </div>
-                    </a>
+            <div class="dropdown-item">
+              <i class="bi bi-question-circle"></i> Help Center
+            </div>
+          </a>
           <a href="stu-settings.php">
-                        <div class="dropdown-item">
-                            <i class="bi bi-gear"></i> Settings and Privacy
-                        </div>
-                    </a>
+            <div class="dropdown-item">
+              <i class="bi bi-gear"></i> Settings and Privacy
+            </div>
+          </a>
           <a href="report-problem.php">
-                        <div class="dropdown-item">
-                            <i class="bi bi-exclamation-triangle"></i> Report a problem
-                        </div>
-                    </a>
+            <div class="dropdown-item">
+              <i class="bi bi-exclamation-triangle"></i> Report a problem
+            </div>
+          </a>
           <a href="forms/logout.php">
-                        <div class="logout-btn">
+            <div class="logout-btn">
               <i class="bi bi-box-arrow-right"></i> Log out
             </div>
           </a>
